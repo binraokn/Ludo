@@ -1,173 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ludo - By Binrao</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ludo Online - No Firebase</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
-body{background:#0f0f0f;color:#fff;font-family:Arial;text-align:center;padding:10px;margin:0}
-.box{background:#1e1e1e;border:2px solid #f7b500;border-radius:18px;padding:15px;max-width:480px;margin:auto}
-.board{width:320px;height:320px;margin:10px auto;background:#fff;border:4px solid #000;border-radius:12px;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);overflow:hidden;position:relative}
-.cell{border:0.5px solid #ddd;font-size:9px;display:flex;align-items:center;justify-content:center}
-.token{width:16px;height:16px;border-radius:50%;border:2px solid #000;display:inline-block}
-button{width:100%;padding:14px;margin-top:10px;background:#f7b500;border:2px solid #000;border-radius:10px;font-weight:900;font-size:16px;cursor:pointer}
-select,input{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:none;box-sizing:border-box}
-.top{display:flex;justify-content:space-between;align-items:center;background:#000;padding:8px 12px;border-radius:10px}
-.coin{color:gold;font-weight:900}
-.dev{font-size:12px;color:#aaa;margin-top:10px}
-.settings{background:#2a2a2a;padding:10px;border-radius:10px;margin-top:10px;text-align:left}
+body{margin:0;background:#1e3a8a;font-family:Arial;text-align:center;color:white}
+#setup{width:340px;margin:10px auto;background:white;color:black;border-radius:15px;padding:15px}
+button{padding:11px 18px;background:gold;border:none;border-radius:10px;font-weight:bold;font-size:16px;margin:6px 0}
+select,input{padding:10px;font-size:15px;width:100%;margin:5px 0;box-sizing:border-box}
+#game{display:none}
+#board{width:340px;height:340px;margin:10px auto;background:white;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);border:3px solid #000;position:relative}
+.cell{border:0.5px solid #ddd;font-size:10px;display:flex;align-items:center;justify-content:center}
+.base-green{background:#16a34a}.base-yellow{background:#eab308}.base-red{background:#dc2626}.base-blue{background:#2563eb}
+.token{width:22px;height:22px;border-radius:50%;border:2px solid gold;z-index:5;position:absolute;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;color:white;box-shadow:0 3px 6px rgba(0,0,0,.5);background:radial-gradient(circle at 30% 30%,#ff8a8a,#dc2626 60%,#7f1d1d)}
+.token.y{background:radial-gradient(circle at 30% 30%,#fef08a,#eab308 60%,#854d0e)}
+.canMove{box-shadow:0 0 0 3px gold,0 0 14px gold;animation:blink .6s infinite}
+@keyframes blink{50%{transform:scale(1.25)}}
+.center{position:absolute;left:40%;top:40%;width:20%;height:20%;background:conic-gradient(#16a34a 0 25%,#eab308 0 50%,#2563eb 0 75%,#dc2626 0);clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%)}
+#bar{display:flex;justify-content:space-between;align-items:center;width:340px;margin:10px auto;background:#0a2472;border:2px solid gold;border-radius:10px;padding:5px}
+.diceBox{width:46px;height:46px;background:white;color:black;font-size:20px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold}
+.prof{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid gold;background:#ddd}
 </style>
 </head>
 <body>
-<div class="box">
-<div class="top">
-<span>🎲 LUDO KING</span>
-<span class="coin">🪙 <span id="coins">1000</span> Coins</span>
+<div id="setup">
+<h2>🎲 LUDO ONLINE - NO FIREBASE</h2>
+<p><b>1. Tumhara Naam + Foto</b></p>
+<input id="myName" placeholder="Tumhara Naam">
+<input type="file" accept="image/*" onchange="loadPic(event,'myImg')">
+<img id="myImg" class="prof">
+<p><b>2. Setting - Sab Ek Jagah</b></p>
+<select id="diceCount"><option value="1">1 Dice</option><option value="2" selected>2 Dice</option></select>
+<select id="sixLimit"><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+<select id="joraMode"><option value="jora">Jora Mode ON - Jora = Apna Number (2-2=4), Chhakka Nahi</option><option value="double">Double Chhakka Mode - Jora = 2 Chhakke</option></select>
+<select id="killOn"><option value="on" selected>Maarna ON - Na maara to 1 goti Box me</option><option value="off">Maarna OFF</option></select>
+<p><b>3. Online Room - Koi Account Nahi</b></p>
+<button onclick="makeRoom()">🔗 Room Banao - Key Lo</button>
+<p id="roomInfo">Room nahi bana</p>
+<input id="joinKey" placeholder="Dost ki Key - Jese LUDO-A7K9P2">
+<button onclick="joinRoom()">✅ Key Se Join Karo</button>
+<p style="font-size:12px;color:green">Dost alag Wifi par bhi isi Key se join hoga. 5KM door bhi chalega.</p>
+<button onclick="startGame()">🎮 GAME START KARO</button>
 </div>
 
-<div class="board" id="board"></div>
-
-<div id="diceBox" style="font-size:22px;font-weight:900;margin:10px">🎲 Roll Karo</div>
-<div id="msg" style="background:#000;padding:10px;border-radius:8px;min-height:20px">RED TURN - Roll 2 Dice</div>
-
-<button onclick="roll()">🎲 DICE ROLL KARO</button>
-
-<div class="settings">
-<b>⚙️ SETTINGS</b><br>
-<label>Players:</label>
-<select id="players"><option value="2">2 Players</option><option value="3">3 Players</option><option value="4">4 Players</option></select>
-<label>Difficulty (Bot):</label>
-<select id="diff"><option value="easy">Easy</option><option value="hard">Hard - Bot ko Jota Zyada</option></select>
-<label>Coins Add Karo - Kitne Marzi:</label>
-<input type="number" id="addCoinInput" value="1000" placeholder="e.g 10000">
-<button onclick="addCoins()" style="background:#fff;padding:10px">🪙 COINS ADD KARO</button>
-<button onclick="resetGame()" style="background:#ff4444;color:#fff;padding:10px">🔄 GAME RESET</button>
+<div id="game">
+<h2>🎲 LUDO ONLINE</h2>
+<p id="info"></p>
+<p id="onlineStatus">🔴 Offline</p>
+<div style="display:flex;justify-content:center;gap:20px;align-items:center">
+<div><img id="myImg2" class="prof"><br><span id="myName2">You</span></div>
+<div><button onclick="toggleVoice()" id="voiceBtn">🎤 Voice ON Karo</button></div>
+<div><img id="frImg2" class="prof"><br><span id="frName2">Dost</span></div>
 </div>
-
-<div class="dev">Development by <b style="color:#f7b500">Binrao</b> | Offline Version</div>
+<div id="board"></div>
+<div id="bar"><div>🔴 <b id="p1">You</b></div><div style="display:flex;gap:5px"><div class="diceBox" id="d1">🎲</div><div class="diceBox" id="d2">🎲</div></div><div><b id="p2">Dost</b> 🟡</div></div>
+<button onclick="rollDice()">DICE ROLL KARO</button>
+<p id="msg">Apni Baari ka Wait Karo</p>
 </div>
 
 <script>
-// --- SETUP ---
-let colors=['red','green','yellow','blue'];
-let tokens={red:[0,0,0,0],green:[0,0,0,0],yellow:[0,0,0,0],blue:[0,0,0,0]};
-let turn=0, dice=0;
-let coins=parseInt(localStorage.getItem('binrao_coins')||'1000');
-document.getElementById('coins').innerText=coins;
-
-// Board banayo - simple 15x15
-let board=document.getElementById('board');
-for(let i=0;i<225;i++){
- let d=document.createElement('div'); d.className='cell';
- if(i<45) d.style.background='#ffdddd';
- else if(i>=180) d.style.background='#ddddff';
- else if(i%15==0) d.style.background='#ddffdd';
- else if(i%15==14) d.style.background='#ffffcc';
- board.appendChild(d);
+let peer=null, conn=null, roomId="", myRole="host", diceCount=2,sixLimit=3,joraMode='jora',killOn=true,sixStreak=0,turn='you',curMove=0,curSix=0,canKillList=[],isJoraTurn=false;
+let board=document.getElementById("board"),cells=[];
+for(let r=0;r<15;r++){for(let c=0;c<15;c++){
+let d=document.createElement("div");d.className="cell";board.appendChild(d);cells.push(d);
+let b=(r<6&&c<6)?'green':(r<6&&c>8)?'yellow':(r>8&&c<6)?'red':(r>8&&c>8)?'blue':'';
+if(b) d.classList.add('base-'+b);
+if(c>=1&&c<=5&&r==6) d.style.background="#16a34a";
+if(r>=1&&r<=5&&c==8) d.style.background="#eab308";
+if(r>=9&&r<=13&&c==6) d.style.background="#dc2626";
+if(c>=9&&c<=13&&r==8) d.style.background="#2563eb";
+if((r==2&&c==6)||(r==6&&c==12)||(r==8&&c==2)||(r==12&&c==8)) d.innerText="★";
+}}
+function wb(a,b){for(let r=a;r<a+4;r++)for(let c=b;c<b+4;c++) cells[r*15+c].style.background="white";}
+wb(1,1);wb(1,10);wb(10,1);wb(10,10);
+let ct=document.createElement("div");ct.className="center";board.appendChild(ct);
+let path=[]; for(let i=0;i<6;i++) path.push([6,i]); for(let i=0;i<6;i++) path.push([5-i,6]);
+path.push([4,7]);path.push([4,8]); for(let i=0;i<6;i++) path.push([i,9]); for(let i=0;i<6;i++) path.push([0,10+i]);
+path.push([1,14]);path.push([2,14]); for(let i=0;i<6;i++) path.push([8,14-i]); for(let i=0;i<6;i++) path.push([9,9+i]);
+path.push([10,14]);path.push([10,13]); for(let i=0;i<6;i++) path.push([14-i,8]); for(let i=0;i<6;i++) path.push([14,7-i]);
+path.push([14,6]);path.push([13,6]); for(let i=0;i<6;i++) path.push([14-i,5]); for(let i=0;i<6;i++) path.push([8,0+i]);
+let safe=[0,8,13,21,26,34,39,47];
+let youPos=[-1,-1,-1,-1],comPos=[-1,-1,-1,-1],youToks=[],comToks=[];
+for(let i=0;i<4;i++){let t=document.createElement("div");t.className="token";t.innerText=i+1;t.onclick=()=>moveYou(i);board.appendChild(t);youToks.push(t);
+let t2=document.createElement("div");t2.className="token y";t2.innerText=i+1;board.appendChild(t2);comToks.push(t2);}
+function placeAll(){for(let i=0;i<4;i++){let p=youPos[i],e=youToks[i];
+if(p==-1){e.style.left=(12+(i%2)*28)+"px";e.style.top=(235+Math.floor(i/2)*28)+"px";}
+else if(p>=52){e.style.left="160px";e.style.top="160px";} else {e.style.left=(path[p%52][1]*22.6+2)+"px";e.style.top=(path[p%52][0]*22.6+2)+"px";}
+let q=comPos[i],e2=comToks[i];
+if(q==-1){e2.style.left=(235+(i%2)*28)+"px";e2.style.top=(12+Math.floor(i/2)*28)+"px";}
+else if(q>=52){e2.style.left="175px";e2.style.top="175px";} else {let qp=path[(q+26)%52];e2.style.left=(qp[1]*22.6+2)+"px";e2.style.top=(qp[0]*22.6+2)+"px";}}}
+placeAll();
+function loadPic(ev,id){let r=new FileReader();r.onload=e=>{document.getElementById(id).src=e.target.result;};r.readAsDataURL(ev.target.files[0]);}
+function makeRoom(){roomId="LUDO-"+Math.random().toString(36).substring(2,8).toUpperCase(); myRole="host";
+peer=new Peer(roomId); peer.on("open",()=>{});
+peer.on("connection",c=>{conn=c; conn.on("data",onData); document.getElementById("onlineStatus").innerText="🟢 Online - Dost Connect Ho Gaya!"; document.getElementById("roomInfo").innerText="Dost aa gaya! Ab Game Start dabao";});
+peer.on("call",call=>{call.answer(myStream); call.on("stream",s=>{let a=new Audio(); a.srcObject=s; a.play();});});
+let link=location.href.split('?')[0]+"?room="+roomId;
+document.getElementById("roomInfo").innerText="Tumhari Key: "+roomId+" - Link copy ho gaya, dost ko bhejo";
+if(navigator.clipboard) navigator.clipboard.writeText(link);
+alert("Key Copy Ho Gayi: "+roomId);}
+function joinRoom(){let k=document.getElementById("joinKey").value.trim().toUpperCase(); if(!k){alert("Pehle Key Daalo");return;}
+if(!k.startsWith("LUDO-")) k="LUDO-"+k;
+roomId=k; myRole="guest"; peer=new Peer(); peer.on("open",()=>{conn=peer.connect(roomId); conn.on("open",()=>{document.getElementById("onlineStatus").innerText="🟢 Online - Host se Connect Ho Gaye!"; document.getElementById("roomInfo").innerText="Connect Ho Gaye!";}); conn.on("data",onData);}); alert("Join kar rahe hain... 5 sec wait karo");}
+function onData(d){ if(d.type=="state"){ let myOldYou=[...youPos]; youPos=d.comPos; comPos=d.youPos; turn = d.turn=="you"?"com":"you"; document.getElementById("d1").innerText=d.d1; document.getElementById("d2").innerText=d.d2; document.getElementById("msg").innerText="Dost ne chala: "+d.msg; placeAll(); } }
+function sendState(){ if(conn && conn.open){ conn.send({type:"state", youPos, comPos, turn, d1:document.getElementById("d1").innerText, d2:document.getElementById("d2").innerText, msg:document.getElementById("msg").innerText}); } }
+let voiceOn=false,myStream=null;
+async function toggleVoice(){ if(!voiceOn){ try{ myStream=await navigator.mediaDevices.getUserMedia({audio:true}); voiceOn=true; document.getElementById("voiceBtn").innerText="🔴 Voice ON Hai - Band karne ke liye dabao"; if(conn && myRole=="host"){ peer.call(conn.peer, myStream); } if(conn && myRole=="guest"){ peer.call(roomId, myStream); } }catch(e){alert("Mic ki Permission Allow karo");} } else { myStream?.getTracks().forEach(t=>t.stop()); voiceOn=false; document.getElementById("voiceBtn").innerText="🎤 Voice ON Karo"; } }
+function startGame(){
+diceCount=parseInt(document.getElementById("diceCount").value); sixLimit=parseInt(document.getElementById("sixLimit").value);
+joraMode=document.getElementById("joraMode").value; killOn=document.getElementById("killOn").value=="on";
+let mn=document.getElementById("myName").value||"You";
+document.getElementById("myName2").innerText=mn; document.getElementById("p1").innerText=mn;
+if(document.getElementById("myImg").src) document.getElementById("myImg2").src=document.getElementById("myImg").src;
+document.getElementById("setup").style.display="none"; document.getElementById("game").style.display="block";
+if(diceCount==1) document.getElementById("d2").style.display="none";
+document.getElementById("info").innerText="Mode: "+(joraMode=='jora'?"Jora Mode":"Double Chhakka")+" | Limit: "+sixLimit+" | Room: "+(roomId||"Offline");
 }
-function updateBoard(){
- // Simple display - tokens ki position board pe dikhao
- let cells=board.children;
- for(let c of cells) c.innerHTML='';
- colors.forEach((col,ci)=>{
-  tokens[col].forEach(p=>{
-   if(p>0 && p<225){
-    let dot=document.createElement('div');
-    dot.className='token'; dot.style.background=col;
-    cells[(p+ci*10)%225].appendChild(dot);
-   }
-  });
- });
+function calcSix(a,b){ if(joraMode=='jora') return 0; if(diceCount==1) return a==6?1:0; if(a==b) return 2; if(a==6||b==6) return 1; return 0; }
+function clearGlow(){youToks.forEach(t=>t.classList.remove("canMove"));}
+function rollDice(){
+if(turn!='you' && roomId) {alert("Abhi Dost ki Baari Hai"); return;}
+let a=Math.floor(Math.random()*6)+1; let b=diceCount==2?Math.floor(Math.random()*6)+1:0;
+document.getElementById("d1").innerText=a; if(diceCount==2) document.getElementById("d2").innerText=b;
+isJoraTurn=(diceCount==2 && a==b); curSix=calcSix(a,b); curMove=diceCount==1?a:(a+b);
+if(joraMode=='jora'){ document.getElementById("msg").innerText=isJoraTurn?"Jora Aaya! "+a+"-"+b+" = "+curMove+" chalega, Chhakka Nahi":"Jora Nahi Aaya "+a+"-"+b; }
+else { if(curSix>0) sixStreak+=curSix; else sixStreak=0; if(sixStreak>=sixLimit){document.getElementById("msg").innerText="Limit Poori! Baari Dost ko!"; sixStreak=0; turn='com'; sendState(); return;} }
+let movable=[]; for(let i=0;i<4;i++){let p=youPos[i]; if(p==-1){if(joraMode=='jora'?isJoraTurn:curSix>0) movable.push(i);} else if(p<52) movable.push(i);}
+canKillList=[]; if(killOn) for(let i=0;i<4;i++){let p=youPos[i]; if(p!=-1&&p<52){let np=p+curMove; if(np<52){let tg=(np+26)%52; for(let j=0;j<4;j++) if(comPos[j]==tg && !safe.includes(tg)) canKillList.push(i);}}}
+if(movable.length==0){document.getElementById("msg").innerText="Koi goti nahi chal sakti!"; turn='com'; sendState(); return;}
+movable.forEach(i=>youToks[i].classList.add("canMove"));
 }
-updateBoard();
-
-function addCoins(){
- let v=parseInt(document.getElementById('addCoinInput').value)||0;
- coins+=v;
- localStorage.setItem('binrao_coins',coins);
- document.getElementById('coins').innerText=coins;
- alert(v+' Coins Add Ho Gaye! Total: '+coins);
+function moveYou(i){
+if(!youToks[i].classList.contains("canMove")) return; clearGlow();
+let old=youPos[i],didKill=false;
+if(old==-1) youPos[i]=0; else youPos[i]=old+curMove;
+if(killOn && youPos[i]<52){let tg=(youPos[i]+26)%52; for(let j=0;j<4;j++) if(comPos[j]==tg && !safe.includes(tg)){comPos[j]=-1;didKill=true;}}
+if(killOn && canKillList.length>0 && !didKill && old!=-1){let v=-1; for(let k=0;k<4;k++) if(k!=i && youPos[k]!=-1 && youPos[k]<52){v=k;break;} if(v!=-1){youPos[v]=-1; document.getElementById("msg").innerText="Tumne maara nahi! 1 goti Box me gayi!";}}
+placeAll();
+if(youPos.filter(p=>p>=52).length==4){alert("Jeet Gaye!"); return;}
+if(joraMode=='jora'){ if(isJoraTurn){document.getElementById("msg").innerText="Jora chal gaya! Dobara Dice Dabao"; sendState(); return;} turn='com'; sendState(); return;}
+if(curSix>0){document.getElementById("msg").innerText+=" - Dobara Chalo!"; sendState(); return;}
+turn='com'; sendState();
 }
-function resetGame(){
- tokens={red:[0,0,0,0],green:[0,0,0,0],yellow:[0,0,0,0],blue:[0,0,0,0]};
- turn=0; updateBoard();
- document.getElementById('msg').innerText='RED TURN - Roll 2 Dice';
-}
-
-// --- TUMHARA WALA DICE CODE ---
-let dice1=0,dice2=0;
-function roll(){
- dice1=Math.floor(Math.random()*6)+1;
- dice2=Math.floor(Math.random()*6)+1;
- dice=dice1+dice2;
- let isJota = (dice1===dice2);
- document.getElementById('diceBox').innerText=`🎲 ${dice1} + ${dice2} = ${dice} ${isJota?' (JOTA!)' : ''}`;
- 
- let diff=document.getElementById('diff').value;
- if(turn!==0 && diff==='hard' && !isJota && Math.random()>0.5){
-   dice1=dice2=Math.floor(Math.random()*6)+1;
-   dice=dice1+dice2; isJota=(dice1===dice2);
-   document.getElementById('diceBox').innerText=`🎲 ${dice1} + ${dice2} = ${dice} (JOTA! - HARD BOT)`;
- }
-
- window.canBeat = isJota;
- window.isDoubleSix = (dice1===6 && dice2===6);
-
- document.getElementById('msg').innerText=`${colors[turn].toUpperCase()} got ${dice} ${isJota?'- JOTA se kaat sakta hai!' : '- Single hai, kaat nahi sakta'}`;
- setTimeout(()=>makeMove(isJota), 500);
-}
-
-function makeMove(isJota){
- let col=colors[turn];
- function tryBeat(newPos){
-   if(!isJota) return false;
-   for(let o of colors){
-     if(o===col) continue;
-     for(let k=0;k<4;k++){
-       if(tokens[o][k]===newPos){
-           tokens[o][k]=0;
-           document.getElementById('msg').innerText+=` 💥 JOTA ne ${o.toUpperCase()} ko kaat diya!`;
-           coins+=50; // kaatne par 50 coins bonus
-           localStorage.setItem('binrao_coins',coins);
-           document.getElementById('coins').innerText=coins;
-           return true;
-       }
-     }
-   }
-   return false;
- }
-
- let movable=tokens[col].map((p,i)=> (p===0 && (dice1===6 || dice2===6 || isJota)) || (p>0 && p+dice<=57) ? i : -1).filter(x=>x>=0);
- if(movable.length===0){ nextTurn(); return; }
- 
- let idx=movable[0];
- tokens[col][idx]+= (tokens[col][idx]===0 ? 1 : dice);
- tryBeat(tokens[col][idx]);
- updateBoard();
- 
- // Jeetne par coins
- if(tokens[col].every(p=>p>=57)){
-   coins+=500;
-   localStorage.setItem('binrao_coins',coins);
-   document.getElementById('coins').innerText=coins;
-   alert(colors[turn].toUpperCase()+' JEET GAYA! +500 Coins');
-   resetGame(); return;
- }
-
- if(dice1===6 || dice2===6 || isJota || window.isDoubleSix){
-   document.getElementById('msg').innerText+=" - DOUBLE 6 / JOTA = Extra Chance!";
-   if(turn!==0) setTimeout(roll, 1200);
- } else {
-   nextTurn();
- }
-}
-
-function nextTurn(){
- let total=parseInt(document.getElementById('players').value);
- turn=(turn+1)%total;
- document.getElementById('msg').innerText=colors[turn].toUpperCase()+" TURN - Roll 2 Dice";
- if(total===1 || turn!==0) setTimeout(roll, 1200);
-}
+let urlParams=new URLSearchParams(location.search); if(urlParams.get("room")){ document.getElementById("joinKey").value=urlParams.get("room"); }
 </script>
 </body>
 </html>
