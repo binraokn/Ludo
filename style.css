@@ -1,0 +1,6 @@
+body { background: black; color: gold; text-align: center; font-family: Arial; }
+h1 { color: gold; }
+.box { border: 3px solid gold; padding: 20px; margin: 20px; border-radius: 15px; }
+button { background: gold; color: black; font-size: 22px; padding: 15px 30px; border: none; border-radius: 10px; }
+.footer { margin-top: 30px; color: white; font-size: 18px; }
+.footer b { color: gold; font-size: 22px; }
