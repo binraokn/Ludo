@@ -1,425 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Binrao Ludo Star</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
-body { background:#5b1a5e; color:white; overflow-x:hidden; }
-#loadingScreen { position:fixed; inset:0; background:#4a1259; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999; }
-#loadingScreen h1 { font-size:48px; color:#ffd700; text-align:center; }
-#mainMenu, #loginBox, #signupBox, #gameBox, #storeBox, #levelBox, #adminBox { display:none; }
-#mainMenu { display:none; flex-direction:column; min-height:100vh; padding:10px 10px 80px; background:linear-gradient(180deg,#7e2a7e 0%, #5b1a5e 40%, #4a1259 100%); position:relative; }
-.topBar { display:flex; align-items:center; gap:5px; }
-.avatarWrap { position:relative; }
-.avatarWrap img { width:52px; height:52px; border-radius:50%; border:3px solid #ffd700; background:#ddd; }
-.starBadge { position:absolute; bottom:-8px; left:0; background:#2a0a2e; border-radius:12px; padding:1px 6px; font-size:11px; font-weight:bold; display:flex; align-items:center; gap:2px; border:1px solid #ffd700; white-space:nowrap; }
-.pill { flex:1; background:#2a0a2e; border-radius:20px; padding:5px 6px; display:flex; align-items:center; gap:4px; font-weight:bold; font-size:14px; border:1px solid rgba(255,255,255,0.2); }
-.pill .plus { background:#22c55e; width:20px; height:20px; border-radius:50%; text-align:center; line-height:20px; font-size:14px; cursor:pointer; }
-.settingsBtn { font-size:28px; background:none; border:none; cursor:pointer; }
-.midRow { display:flex; gap:8px; margin-top:16px; }
-.leftCol { display:flex; flex-direction:column; gap:10px; width:58px; }
-.leftIcon { background:#facc15; border-radius:10px; padding:8px 4px; text-align:center; font-size:24px; position:relative; border:2px solid #fff; cursor:pointer; }
-.leftIcon small { display:block; font-size:9px; color:#111; font-weight:bold; }
-.badge6 { position:absolute; top:-8px; right:-6px; background:#dc2626; color:white; width:20px; height:20px; border-radius:50%; font-size:12px; line-height:20px; font-weight:bold; }
-.centerCol { flex:1; display:flex; flex-direction:column; gap:8px; }
-.lockRow { display:flex; gap:8px; }
-.lockBox { flex:1; background:linear-gradient(180deg,#a855f7,#7e22ce); border-radius:12px; padding:8px 4px; text-align:center; border:2px solid #facc15; }
-.lockBox span { font-size:22px; }
-.lockBox small { display:block; font-size:10px; }
-.offerBox { background:linear-gradient(90deg,#1e1b4b,#7c3aed,#1e1b4b); border:2px solid #facc15; border-radius:12px; padding:6px; }
-.offerTop { display:flex; justify-content:space-between; font-size:11px; font-weight:bold; }
-.offerTop b { background:#dc2626; padding:2px 8px; border-radius:6px; }
-.offerMid { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
-.offerMid .coins { font-size:18px; font-weight:900; color:#ffd700; }
-.offerMid button { background:#22c55e; border:none; padding:6px 10px; border-radius:8px; color:white; font-weight:bold; font-size:12px; }
-.rightCol { display:flex; flex-direction:column; gap:10px; width:58px; align-items:center; }
-.rightIcon { font-size:32px; text-align:center; position:relative; }
-.rightIcon small { display:block; font-size:9px; }
-.badge1 { position:absolute; top:-4px; right:-2px; background:#dc2626; color:white; width:18px; height:18px; border-radius:50%; font-size:11px; line-height:18px; }
-.watermark { text-align:center; font-size:38px; font-weight:900; color:rgba(255,255,255,0.08); line-height:1; margin:10px 0 0; }
-.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
-.bigCard { border:none; border-radius:16px; padding:14px 6px 10px; color:white; font-weight:900; cursor:pointer; }
-.bigCard .num { font-size:52px; line-height:1; }
-.bigCard .diceRow { font-size:28px; }
-.bigCard p { margin-top:6px; font-size:15px; }
-.card2 { background:linear-gradient(180deg,#fbbf24,#f97316); box-shadow:0 6px 0 #9a3412; }
-.card4 { background:linear-gradient(180deg,#818cf8,#4f46e5); box-shadow:0 6px 0 #1e1b4b; }
-.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px; }
-.smallCard { background:#6d28d9; border:none; color:white; border-radius:14px; padding:10px 4px 8px; font-weight:bold; cursor:pointer; }
-.smallCard .emoji { font-size:28px; }
-.smallCard small { display:block; font-size:11px; margin-top:4px; }
-.adminWrap { display:none; margin-top:12px; }
-.adminBigBtn { width:100%; padding:13px; border:2px solid #ffd700; border-radius:12px; background:#dc2626; color:white; font-weight:bold; font-size:16px; cursor:pointer; }
-.box { background:white; color:#111; margin:20px; padding:20px; border-radius:18px; text-align:center; }
-.box input { width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:10px; font-size:16px; }
-.btn { width:100%; padding:13px; border:none; border-radius:12px; background:#7c3aed; color:white; font-weight:bold; font-size:16px; margin-top:10px; cursor:pointer; }
-.btn.green { background:#16a34a; }
-.btn.gold { background:#eab308; color:#111; }
-.btn:disabled { background:#9ca3af !important; }
-.link { color:#7c3aed; margin-top:10px; display:block; cursor:pointer; }
-#gameBox { padding:16px; text-align:center; background:linear-gradient(180deg,#7e2a7e,#4a1259); min-height:100vh; }
-.diceBox { background:white; color:#111; border-radius:20px; padding:20px; margin-top:16px; }
-.dice { font-size:60px; }
-.bottomNav { position:fixed; bottom:0; left:0; right:0; background:#3b0f3d; display:flex; justify-content:space-around; padding:6px 0 10px; border-top:2px solid #ffd700; z-index:50; }
-.navItem { text-align:center; font-size:11px; opacity:0.7; cursor:pointer; }
-.navItem.active { opacity:1; color:#ffd700; font-weight:bold; background:#5b1a5e; border-radius:12px 12px 0 0; padding:0 8px; }
-.navItem div { font-size:26px; }
-.navItem .homeIcon { font-size:38px; margin-top:-18px; background:#eab308; border-radius:50%; width:52px; height:52px; line-height:52px; }
-#settingsBox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
-.settingsCard { background:linear-gradient(180deg,#c026d3,#4c1d95); border:3px solid #facc15; border-radius:20px; width:100%; max-width:380px; padding:20px; position:relative; margin:auto; }
-.closeBtn { position:absolute; top:-10px; right:-5px; background:#f97316; color:white; border:none; width:35px; height:35px; border-radius:8px; font-size:20px; font-weight:bold; cursor:pointer; }
-.setRow { display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); padding:12px; border-radius:12px; margin:8px 0; }
-.setRow input { width:24px; height:24px; }
-.setBtn { background:#1e3a8a; color:white; border:none; padding:8px 18px; border-radius:10px; font-weight:bold; cursor:pointer; }
-.setBtn.red { background:#dc2626; }
-.storeItem { background:#f3f4f6; border-radius:12px; padding:12px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; text-align:left; }
-.storeItem b { display:block; }
-.storeItem small { color:#666; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b1a5e">
+  <title>BINRAO LUDO STAR</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="loadingScreen"><h1>BINRAO<br>LUDO STAR ⭐</h1><p>Loading...</p></div>
 
-<div id="loginBox" class="box">
-  <h2>Login Karo 🔐</h2><p id="loginTypeText">Username se Login</p>
-  <input id="loginInput" placeholder="Username">
-  <input id="passInput" type="password" placeholder="Password">
-  <button class="btn" onclick="doLogin()">LOGIN</button>
-  <p id="loginMsg" style="color:red"></p>
-  <span class="link" onclick="showSignup()">Account Nahi Hai? CREATE NEW ACCOUNT</span>
-  <button class="btn" onclick="backToMenu()" style="background:#64748b">Back</button>
-</div>
-
-<div id="signupBox" class="box">
-  <h2>New Account Banao ✨</h2>
-  <input id="newUser" placeholder="Username">
-  <input id="newPhone" placeholder="Phone Number">
-  <input id="newGmail" placeholder="Gmail">
-  <input id="newPass" type="password" placeholder="Password">
-  <button class="btn green" onclick="doSignup()">Account Banao</button>
-  <p id="signupMsg" style="color:green"></p>
-  <span class="link" onclick="showLogin()">Pehle se Account hai? Login Karo</span>
-</div>
-
-<div id="mainMenu">
-  <div class="topBar">
-    <div class="avatarWrap"><img src="https://via.placeholder.com/52"><div class="starBadge">⭐ <span id="levelText">49 / 75</span></div></div>
-    <div class="pill">🪙 <span id="topCoins">7050</span> <span class="plus" onclick="openStore()">+</span></div>
-    <div class="pill">💎 <span id="topGems">89</span> <span class="plus" onclick="openStore()">+</span></div>
-    <div class="pill" style="flex:0.6; justify-content:center;">🎰 <span>0</span> <span class="plus">+</span></div>
-    <button class="settingsBtn" onclick="openSettings()">⚙️</button>
+  <!-- Loading Screen -->
+  <div id="loadingScreen">
+    <h1 class="ludo-logo">BINRAO</h1>
+    <h2>LUDO STAR ⭐</h2>
+    <div class="loader"></div>
+    <p>Loading Game...</p>
   </div>
-  <div class="midRow">
-    <div class="leftCol">
-      <div class="leftIcon" onclick="alert('Video: Rozana Video Dekh Ke Coins Kamao!')">🎬<span class="badge6">6</span><small>Video</small></div>
-      <div class="leftIcon" onclick="openStore()">🎲<small>Dice</small></div>
-      <div class="leftIcon" style="background:#f97316;">🦖<span class="badge6">6</span><small>New</small></div>
-    </div>
-    <div class="centerCol">
-      <div class="lockRow">
-        <div class="lockBox">🛡️<small>🔒 Level 4</small></div>
-        <div class="lockBox" style="background:linear-gradient(180deg,#facc15,#f97316);">🏆<small>🔒 Level 5<br>MEGA WIN</small></div>
+
+  <!-- Login -->
+  <section id="loginBox" class="box">
+    <h2>Welcome Back 🔐</h2>
+    <p id="loginTypeText">Username se Login</p>
+
+    <input id="loginInput" type="text" placeholder="Username">
+    <input id="passInput" type="password" placeholder="Password">
+
+    <button class="btn-gold" onclick="doLogin()">LOGIN</button>
+
+    <p id="loginMsg"></p>
+
+    <span class="link" onclick="showSignup()">
+      Create New Account
+    </span>
+  </section>
+
+  <!-- Signup -->
+  <section id="signupBox" class="box">
+    <h2>Create Account ✨</h2>
+
+    <input id="newUser" placeholder="Username">
+    <input id="newPhone" placeholder="Phone Number">
+    <input id="newGmail" type="email" placeholder="Gmail">
+    <input id="newPass" type="password" placeholder="Password">
+
+    <button class="btn-gold" onclick="doSignup()">
+      SIGN UP
+    </button>
+
+    <p id="signupMsg"></p>
+
+    <span class="link" onclick="showLogin()">
+      Already have an account? Login
+    </span>
+  </section>
+
+  <!-- Main Menu -->
+  <main id="mainMenu">
+    <header class="topBar">
+      <div class="avatarWrap">
+        <div class="avatar">👑</div>
+        <span id="levelText">Level 1</span>
       </div>
-      <div class="offerBox">
-        <div class="offerTop"><b>8X Value</b><span>One Time Offer</span></div>
-        <div class="offerMid"><span>🐸 150</span><span class="coins">🪙 5000</span><span>🦉 OWL</span><button onclick="openStore()">0.99 USD</button></div>
+
+      <div class="pill">
+        🪙 <span id="topCoins">7050</span>
+        <button onclick="openStore()">+</button>
+      </div>
+
+      <div class="pill">
+        💎 <span id="topGems">89</span>
+        <button onclick="openStore()">+</button>
+      </div>
+
+      <button onclick="openSettings()">⚙️</button>
+    </header>
+
+    <h1 class="watermark">BINRAO<br>LUDO STAR</h1>
+
+    <section class="grid2">
+      <button class="bigCard card2"
+        onclick="startGame('2 Player')">
+        🎲
+        <h2>2 PLAYER</h2>
+      </button>
+
+      <button class="bigCard card4"
+        onclick="startGame('4 Player')">
+        🎲🎲
+        <h2>4 PLAYER</h2>
+      </button>
+    </section>
+
+    <section class="grid3">
+      <button class="smallCard" onclick="startGame('Private')">
+        💖<small>Private Table</small>
+      </button>
+
+      <button class="smallCard" onclick="startGame('Online')">
+        ⚔️<small>Online Game</small>
+      </button>
+
+      <button class="smallCard" onclick="startGame('Friends')">
+        👥<small>Friends</small>
+      </button>
+    </section>
+
+    <div class="terms">
+      <label>
+        <input type="checkbox" id="agree">
+        I Accept Terms & Conditions
+      </label>
+    </div>
+
+    <div id="adminBtnRow" class="adminWrap">
+      <button class="adminBigBtn" onclick="openAdmin()">
+        👑 ADMIN PANEL
+      </button>
+    </div>
+
+    <footer class="bottomNav">
+      <button onclick="openStore()">🛒<small>Shop</small></button>
+      <button onclick="alert('Friends coming soon')">👥<small>Friends</small></button>
+      <button onclick="backToMenu()">🏠<small>Home</small></button>
+      <button onclick="alert('Clubs coming soon')">🏆<small>Clubs</small></button>
+      <button onclick="claimDaily()">🎁<small>Reward</small></button>
+    </footer>
+  </main>
+
+  <!-- Game Screen -->
+  <section id="gameBox">
+    <h2 id="player">Player</h2>
+    <p id="computer">Computer AI</p>
+
+    <div id="ludoBoard">
+      <div class="boardPlaceholder">
+        🎲<br>
+        BINRAO LUDO BOARD
+        <p>Board implementation is next</p>
       </div>
     </div>
-    <div class="rightCol">
-      <div class="rightIcon">👥<small>Friends</small></div>
-      <div class="rightIcon">❓<span class="badge1">1</span><small>Help</small></div>
-      <div class="rightIcon">🗿<small style="background:#dc2626; color:white; padding:1px 6px; border-radius:8px;">Sale!</small></div>
+
+    <div class="diceBox">
+      <h2 id="dice">🎲 Dice</h2>
+      <p id="status">Your turn</p>
+
+      <button class="btn-gold" onclick="rollDice()">
+        ROLL DICE
+      </button>
+    </div>
+
+    <button class="btn" onclick="backToMenu()">
+      BACK TO HOME
+    </button>
+  </section>
+
+  <!-- Store -->
+  <section id="storeBox" class="box">
+    <h2>🛒 BINRAO STORE</h2>
+
+    <p>Coins: <span id="storeCoins">7050</span></p>
+    <p>Gems: <span id="storeGems">89</span></p>
+
+    <button class="btn-gold" onclick="claimFree()">
+      🎁 FREE REWARD
+    </button>
+
+    <p id="storeMsg"></p>
+
+    <button class="btn" onclick="backToMenu()">
+      BACK
+    </button>
+  </section>
+
+  <!-- Admin -->
+  <section id="adminBox" class="box">
+    <h2>👑 ADMIN PANEL</h2>
+
+    <input id="transferTo" placeholder="Player Username">
+    <input id="transferCoins" type="number" placeholder="Coins">
+    <input id="transferGems" type="number" placeholder="Gems">
+
+    <button class="btn-gold" onclick="doTransfer()">
+      TRANSFER
+    </button>
+
+    <p id="transferMsg"></p>
+    <p id="transferHistory"></p>
+
+    <button class="btn" onclick="backToMenu()">BACK</button>
+  </section>
+
+  <!-- Settings -->
+  <div id="settingsBox">
+    <div class="settingsCard">
+      <button onclick="closeSettings()">❌</button>
+      <h2>SETTINGS</h2>
+
+      <div class="setRow">
+        <span>Sound</span>
+        <input type="checkbox" id="soundCheck" checked>
+      </div>
+
+      <div class="setRow">
+        <span>Vibration</span>
+        <input type="checkbox" id="vibCheck" checked>
+      </div>
+
+      <div class="setRow">
+        <span>Kill Mode</span>
+        <input type="checkbox" id="killCheck" checked>
+      </div>
+
+      <button class="btn" onclick="doLogout()">LOGOUT</button>
     </div>
   </div>
-  <div id="adminBtnRow" class="adminWrap">
-    <button class="adminBigBtn" onclick="openAdmin()">👑 ADMIN - Transfer Coins / Gems</button>
-    <p style="text-align:center; font-size:12px; margin-top:5px;">Sirf Binrao Ko Dikhega - Baaki Ko Nahi!</p>
-  </div>
-  <div class="watermark">LUDO<br>STAR</div>
-  <div class="grid2">
-    <button class="bigCard card2" onclick="startGame('2 Player')"><div class="diceRow">🎲 🎲</div><div class="num">2️⃣</div><p>2 Player</p></button>
-    <button class="bigCard card4" onclick="startGame('4 Player')"><div class="diceRow">🎲 🎲</div><div class="num">4️⃣</div><p>4 Player</p></button>
-  </div>
-  <div class="grid3">
-    <button class="smallCard" onclick="startGame('Private')"><div class="emoji">💖</div><small>Private Table</small></button>
-    <button class="smallCard" onclick="startGame('Online')"><div class="emoji">⚔️ VS</div><small>Team Up Online</small></button>
-    <button class="smallCard" onclick="startGame('Friends')"><div class="emoji">😎</div><small>Team Up Friends</small></button>
-  </div>
-  <div style="text-align:center; margin-top:10px;"><label><input type="checkbox" id="agree"> Terms Accept Karta Hun</label></div>
-  <div class="bottomNav">
-    <div class="navItem" onclick="openStore()"><div>🛒</div>Shop</div>
-    <div class="navItem" onclick="alert('Friends: Abhi koi friend online nahi hai')"><div>👥</div>Friends</div>
-    <div class="navItem active" onclick="backToMenu()"><div class="homeIcon">🏠</div>Home</div>
-    <div class="navItem" onclick="alert('Clubs: Level 10 pe khulega!')"><div>🏆<span style="color:#dc2626; font-size:12px;">1</span></div>Clubs</div>
-    <div class="navItem" onclick="alert('Chest: Rozana Free Chest!')"><div>📦</div>Chest</div>
-  </div>
-</div>
 
-<div id="storeBox" class="box">
-  <h2>🛒 BINRAO STORE - REAL STORE</h2>
-  <p>Coins: <b id="storeCoins">7050</b> | Gems: <b id="storeGems">89</b> | Level: <b id="storeLevel">49 / 75</b></p>
-  <p style="font-size:12px; color:#666;">Har Cheez Ke Paise Katengi - Free Wala Sirf 1 Baar!</p>
-  <div class="storeItem"><div><b>🎁 Daily Free Gift - 500 Coins</b><small>Sirf 1 Baar - Dobara Nahi Milega</small></div><button id="freeBtn" class="btn gold" style="width:auto; padding:8px 14px;" onclick="claimFree()">CLAIM FREE</button></div>
-  <div class="storeItem"><div><b>🪙 5000 Coins Pack</b><small>Price: 100 Gems</small></div><button class="btn gold" style="width:auto; padding:8px 14px;" onclick="buyReal('5000 Coins', 0, 100, 5000, 0)">BUY</button></div>
-  <div class="storeItem"><div><b>💎 50 Gems Pack</b><small>Price: 5000 Coins</small></div><button class="btn gold" style="width:auto; padding:8px 14px;" onclick="buyReal('50 Gems', 5000, 0, 0, 50)">BUY</button></div>
-  <div class="storeItem"><div><b>🎲 Golden Dice</b><small>Price: 2000 Coins</small></div><button class="btn gold" style="width:auto; padding:8px 14px;" onclick="buyReal('Golden Dice', 2000, 0, 0, 0)">BUY</button></div>
-  <div class="storeItem"><div><b>👑 VIP Luxury - 30 Din</b><small>Price: 100 Gems</small></div><button class="btn gold" style="width:auto; padding:8px 14px;" onclick="buyReal('VIP Luxury', 0, 100, 0, 0)">BUY</button></div>
-  <p id="storeMsg" style="color:green; font-weight:bold;"></p>
-  <button class="btn" onclick="backToMenu()">Back To Home</button>
-</div>
+  <!-- JavaScript Files -->
+  <script src="database.js" defer></script>
+  <script src="login.js" defer></script>
+  <script src="game.js" defer></script>
+  <script src="admin.js" defer></script>
 
-<div id="levelBox" class="box">
-  <h2>⭐ LEVEL - <span id="levelTitle">49 / 75</span></h2>
-  <p id="levelInfo">Tum Level 49 / 75 pe ho!</p>
-  <div style="background:#e5e7eb; height:20px; border-radius:10px; overflow:hidden;"><div id="levelFill2" style="background:#ffd700; height:100%; width:65%;"></div></div>
-  <p style="margin-top:10px;">👑 Admin = Level 999<br>👤 Normal Player = Level 49 / 75</p>
-  <button class="btn" onclick="backToMenu()">Back</button>
-</div>
-
-<div id="adminBox" class="box" style="border:3px solid #dc2626;">
-  <h2 style="color:#dc2626;">👑 ADMIN ONLY - TRANSFER</h2>
-  <p>Sirf Binrao Kar Sakta Hai! Tumhara Balance: 10B Coins</p>
-  <input id="transferTo" placeholder="Kisko Bhejna Hai? Username">
-  <input id="transferCoins" type="number" placeholder="Kitne Coins? Jaise: 5000">
-  <input id="transferGems" type="number" placeholder="Kitne Gems? Jaise: 50">
-  <button class="btn" style="background:#dc2626;" onclick="doTransfer()">Transfer Karo 🚀</button>
-  <p id="transferMsg" style="color:green"></p>
-  <p id="transferHistory" style="font-size:13px; text-align:left;">Abhi koi transfer nahi hua</p>
-  <button class="btn" onclick="backToMenu()" style="background:#64748b">Back To Home</button>
-</div>
-
-<div id="gameBox">
-  <h2 id="player">Player: Binrao 👑</h2>
-  <p>Binrao | Coins: <span id="gameCoins">7050</span> | VIP Luxury</p>
-  <div class="diceBox">
-    <p>Dice: <span id="diceNum">4 + 4</span></p>
-    <div style="display:flex; justify-content:center; gap:20px;">
-      <div><div class="dice" id="dice1">🎲</div><span>Dice 1</span></div>
-      <div><div class="dice" id="dice2">🎲</div><span>Dice 2 / Jota</span></div>
-    </div>
-    <p id="diceResult">Dice Phenko! - 2 Chhakke = Dobara Bari!</p>
-    <p id="extraInfo" style="font-size:13px; color:#7c3aed;">Jota: OFF | Kill: ON | 2 Dice: OFF | Total Kill: 0</p>
-    <p id="killMsg" style="font-size:14px; color:#dc2626; font-weight:bold;">💀 Abhi Koi Kill Nahi Hua</p>
-    <button class="btn" onclick="rollDice()">Dice Phenko 🎲</button>
-    <button class="btn" onclick="openSettings()" style="background:#f97316">⚙️ Settings</button>
-    <button class="btn" onclick="backToMenu()" style="background:#64748b">Back To Home</button>
-  </div>
-</div>
-
-<div id="settingsBox">
-  <div class="settingsCard">
-    <button class="closeBtn" onclick="closeSettings()">X</button>
-    <h2>SETTINGS</h2>
-    <div class="setRow"><span>🔵 Login</span><button class="setBtn" onclick="showLogin();closeSettings()">Login</button></div>
-    <div class="setRow"><span>🌐 Language</span><button class="setBtn" onclick="changeLang()">English ✏️</button></div>
-    <div class="setRow"><span>Logout</span><button class="setBtn red" onclick="doLogout()">Logout</button></div>
-    <div class="setRow"><span>Need help?</span><button class="setBtn" onclick="alert('Support: Binrao Ludo Team')">Support</button></div>
-    <div class="setRow"><span>🔊 Sound</span><input type="checkbox" id="soundCheck" checked onchange="saveSettings()"></div>
-    <div class="setRow"><span>🔔 Notification</span><input type="checkbox" id="notiCheck" checked onchange="saveSettings()"></div>
-    <div class="setRow"><span>📳 Vibration</span><input type="checkbox" id="vibCheck" checked onchange="saveSettings()"></div>
-    <div class="setRow"><span>🎲 1 Dice Mode</span><input type="checkbox" id="oneDiceCheck" checked onchange="diceModeChange('one')"></div>
-    <div class="setRow"><span>🎲🎲 2 Dice Opening</span><input type="checkbox" id="twoDiceCheck" onchange="diceModeChange('two')"></div>
-    <div class="setRow"><span>👯 Jota Mode</span><input type="checkbox" id="jotaCheck" onchange="jotaChange()"></div>
-    <div class="setRow"><span>💀 Kill Mode</span><input type="checkbox" id="killCheck" checked onchange="killChange()"></div>
-    <div class="setRow"><span>🛡️ Safe Ghar</span><input type="checkbox" id="safeCheck" checked></div>
-  </div>
-</div>
-
-<!-- LOGIN.JS KO HATA DIYA - SAB KUCH ISI FILE ME HAI, TAKRAO KHATAM -->
-<script>
-// ===== SAB KUCH ISI FILE ME - KOI BAHAR WALI FILE NAHI CHAHIYE =====
-let sixCount = 0, killedCount = 0, soundOn = true, jotaMode = false, twoDiceMode = false, killMode = true;
-let myCoins = 7050, myGems = 89, myLevelText = "49 / 75", currentUser = "";
-let isAdminNow = false;
-
-function hideAll(){
-  ["loadingScreen","mainMenu","loginBox","signupBox","gameBox","storeBox","levelBox","adminBox"].forEach(id=>{
-    let el = document.getElementById(id);
-    if(el) el.style.display = "none";
-  });
-}
-function showLogin(){
-  hideAll();
-  document.getElementById("loginBox").style.display = "block";
-  document.getElementById("loginTypeText").innerText = "Username se Login";
-}
-function setLoginType(t){ showLogin(); }
-function showSignup(){
-  hideAll();
-  document.getElementById("signupBox").style.display = "block";
-}
-function backToMenu(){
-  hideAll();
-  document.getElementById("mainMenu").style.display = "flex";
-  updateCoinsUI();
-}
-function doLogin(){
-  let u = document.getElementById("loginInput").value.trim();
-  let p = document.getElementById("passInput").value.trim();
-  if(!u || !p){ document.getElementById("loginMsg").innerText = "Username + Password Likho!"; return; }
-  if(u === "Binrao" && p === "Binrao123"){
-    document.getElementById("player").innerText = "Player: Binrao 👑";
-    checkAdmin();
-    hideAll();
-    document.getElementById("mainMenu").style.display = "flex";
-    updateCoinsUI();
-    return;
-  }
-  let users = JSON.parse(localStorage.getItem("binrao_users") || "[]");
-  let found = users.find(x => x.user === u && x.pass === p);
-  if(found){
-    document.getElementById("player").innerText = "Player: " + u;
-    checkAdmin();
-    hideAll();
-    document.getElementById("mainMenu").style.display = "flex";
-    updateCoinsUI();
-  } else {
-    document.getElementById("loginMsg").innerText = "Galat Username ya Password! Pehle Signup Karo!";
-  }
-}
-function doSignup(){
-  let u = document.getElementById("newUser").value.trim();
-  let ph = document.getElementById("newPhone").value.trim();
-  let g = document.getElementById("newGmail").value.trim();
-  let p = document.getElementById("newPass").value.trim();
-  if(!u || !p){ document.getElementById("signupMsg").innerText = "Username + Password Zaroori Hai!"; return; }
-  let users = JSON.parse(localStorage.getItem("binrao_users") || "[]");
-  if(users.find(x => x.user === u)){ document.getElementById("signupMsg").innerText = "Ye Username Pehle Se Hai!"; return; }
-  users.push({user:u, phone:ph, gmail:g, pass:p});
-  localStorage.setItem("binrao_users", JSON.stringify(users));
-  document.getElementById("signupMsg").innerText = "Account Ban Gaya! Ab Login Karo ✅";
-  setTimeout(showLogin, 1000);
-}
-function formatCoins(n){ if(n >= 1000000000) return (n/1000000000).toFixed(1).replace(".0","") + "B"; if(n >= 1000000) return (n/1000000).toFixed(1).replace(".0","") + "M"; if(n >= 1000) return (n/1000).toFixed(1).replace(".0","") + "K"; return n.toString(); }
-function openSettings(){ document.getElementById("settingsBox").style.display = "flex"; }
-function closeSettings(){ document.getElementById("settingsBox").style.display = "none"; }
-function doLogout(){ currentUser=""; isAdminNow=false; document.getElementById("loginInput").value=""; document.getElementById("passInput").value=""; closeSettings(); hideAll(); document.getElementById("loginBox").style.display="block"; document.getElementById("adminBtnRow").style.display="none"; alert("Logout Ho Gaya!"); }
-function changeLang(){ alert("Language: English / Roman Urdu"); }
-function saveSettings(){ soundOn = document.getElementById("soundCheck").checked; }
-function checkAdmin(){
-  let loginName = document.getElementById("loginInput").value.trim();
-  let playerName = document.getElementById("player").innerText;
-  if(loginName === "Binrao" || playerName.includes("Binrao")){
-    isAdminNow = true; currentUser = "Binrao"; myCoins = 10000000000; myGems = 9999; myLevelText = "999";
-    document.getElementById("adminBtnRow").style.display = "block";
-  } else {
-    isAdminNow = false; currentUser = loginName || "Player"; myCoins = 7050; myGems = 89; myLevelText = "49 / 75";
-    document.getElementById("adminBtnRow").style.display = "none";
-  }
-  updateCoinsUI();
-}
-function updateCoinsUI(){
-  document.getElementById("topCoins").innerText = formatCoins(myCoins);
-  document.getElementById("topGems").innerText = myGems;
-  document.getElementById("storeCoins").innerText = formatCoins(myCoins);
-  document.getElementById("storeGems").innerText = myGems;
-  document.getElementById("storeLevel").innerText = myLevelText;
-  document.getElementById("gameCoins").innerText = formatCoins(myCoins);
-  document.getElementById("levelText").innerText = myLevelText;
-  document.getElementById("levelTitle").innerText = myLevelText;
-  document.getElementById("levelInfo").innerText = isAdminNow ? "Tum ADMIN Ho! Level 999 - Sab Se Upar! 👑" : "Tum Level 49 / 75 pe ho! Photo Jaisa!";
-  document.getElementById("levelFill2").style.width = isAdminNow ? "100%" : "65%";
-  let claimed = localStorage.getItem("binrao_free_claimed");
-  let fb = document.getElementById("freeBtn");
-  if(fb){ if(claimed === "yes"){ fb.innerText = "CLAIMED ✅"; fb.disabled = true; } else { fb.innerText = "CLAIM FREE"; fb.disabled = false; } }
-}
-function claimDaily(){ alert("Daily Reward: Store Me Jao, Free Gift Lo! 🎁"); openStore(); }
-function openStore(){ hideAll(); document.getElementById("storeBox").style.display="block"; updateCoinsUI(); }
-function openLevel(){ hideAll(); document.getElementById("levelBox").style.display="block"; updateCoinsUI(); }
-function openAdmin(){ if(!isAdminNow){ alert("Ye Sirf Admin Ke Liye Hai! Pehle Admin Login Karo!"); return; } hideAll(); document.getElementById("adminBox").style.display="block"; }
-function startGame(mode){ if(!document.getElementById("agree").checked){ alert("Pehle Terms pe Tick karo!"); return; } showLogin(); }
-function claimFree(){
-  let claimed = localStorage.getItem("binrao_free_claimed");
-  if(claimed === "yes"){ alert("Ye FREE Pehle Hi Le Liya Hai! Dobara Nahi Milega!"); return; }
-  myCoins += 500; localStorage.setItem("binrao_free_claimed", "yes");
-  document.getElementById("storeMsg").innerText = "FREE Gift Mil Gaya! +500 Coins! Ab Dobara Nahi Milega! ✅"; updateCoinsUI();
-}
-function buyReal(name, coinsCost, gemsCost, giveCoins, giveGems){
-  if(coinsCost > 0 && myCoins < coinsCost){ alert("Coins Kam Hain!"); return; }
-  if(gemsCost > 0 && myGems < gemsCost){ alert("Gems Kam Hain!"); return; }
-  myCoins -= coinsCost; myGems -= gemsCost; myCoins += giveCoins; myGems += giveGems;
-  document.getElementById("storeMsg").innerText = name + " Buy Ho Gaya! ✅ Paise Kat Gaye!"; updateCoinsUI();
-}
-function doTransfer(){
-  if(!isAdminNow){ alert("Sirf Admin Transfer Kar Sakta Hai!"); return; }
-  let to = document.getElementById("transferTo").value.trim();
-  let c = parseInt(document.getElementById("transferCoins").value) || 0;
-  let g = parseInt(document.getElementById("transferGems").value) || 0;
-  if(!to){ alert("Kiska Naam Likho!"); return; }
-  if(c <= 0 && g <= 0){ alert("Coins ya Gems Likho!"); return; }
-  if(c > myCoins){ alert("Tumhare Paas Itne Coins Nahi!"); return; }
-  myCoins -= c; myGems -= g; if(myGems < 0) myGems = 0; updateCoinsUI();
-  document.getElementById("transferMsg").innerText = to + " ko " + c + " Coins + " + g + " Gems Bhej Diye! ✅";
-  document.getElementById("transferHistory").innerHTML = "✅ " + to + " ko " + c + " Coins, " + g + " Gems<br>" + document.getElementById("transferHistory").innerHTML;
-  document.getElementById("transferTo").value=""; document.getElementById("transferCoins").value=""; document.getElementById("transferGems").value="";
-}
-function jotaChange(){
-  jotaMode = document.getElementById("jotaCheck").checked;
-  let twoBox = document.getElementById("twoDiceCheck");
-  if(jotaMode){ twoDiceMode=false; twoBox.checked=false; twoBox.disabled=true; document.getElementById("oneDiceCheck").checked=true; alert("Jota ON! 2 Dice Auto OFF!"); }
-  else { twoBox.disabled=false; alert("Jota OFF! Ab 2 Dice Chala Sakte Ho!"); }
-}
-function diceModeChange(type){
-  if(type==='one'){ document.getElementById("oneDiceCheck").checked=true; if(!jotaMode) document.getElementById("twoDiceCheck").checked=false; twoDiceMode=false; }
-  if(type==='two'){ if(jotaMode){ alert("Pehle Jota OFF Karo!"); document.getElementById("twoDiceCheck").checked=false; return; } document.getElementById("twoDiceCheck").checked=true; document.getElementById("oneDiceCheck").checked=false; twoDiceMode=true; }
-}
-function killChange(){ killMode = document.getElementById("killCheck").checked; alert(killMode ? "Kill ON!" : "Kill OFF!"); }
-function playSound(){ if(!soundOn) return; try{ let a=new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"); a.play(); }catch(e){} }
-function rollDice(){
-  playSound();
-  if(document.getElementById("vibCheck").checked && navigator.vibrate) navigator.vibrate(100);
-  let d1 = Math.floor(Math.random()*6)+1, d2=0, emojis=["","⚀","⚁","⚂","⚃","⚄","⚅"], msg="", killHua=false;
-  if(twoDiceMode && !jotaMode){
-    d2 = Math.floor(Math.random()*6)+1; let total=d1+d2;
-    document.getElementById("dice1").innerText=emojis[d1]; document.getElementById("dice2").innerText=emojis[d2];
-    document.getElementById("diceNum").innerText=d1+" + "+d2+" = "+total;
-    msg="Tumne "+d1+" + "+d2+" = "+total+" phenka! ";
-    if(d1===6 && d2===6){ sixCount++; msg+="🔥 DOUBLE CHHAKKA! Dobara Bari! "; }
-    else if(d1===6||d2===6){ sixCount++; msg+="🎉 Chhakka! Dobara Bari! "; }
-    else{ sixCount=0; msg+="Ab Computer Ki Bari. "; }
-    if(sixCount>=3){ msg="❌ 3 Baar 6! Bari Khatam! "; sixCount=0; }
-  } else {
-    document.getElementById("dice1").innerText=emojis[d1]; document.getElementById("dice2").innerText="❌";
-    document.getElementById("diceNum").innerText="Dice: "+d1;
-    msg="Tumne "+d1+" phenka! ";
-    if(jotaMode){ msg+="👯 Jota ON! "; if(d1===6){ sixCount++; msg+="🔥 Chhakka! Dobara Bari! "; } else{ sixCount=0; msg+="Ab Computer Ki Bari. "; } }
-    else{ if(d1===6){ sixCount++; msg+="🎉 Chhakka! Dobara Bari! "; } else{ sixCount=0; msg+="Ab Computer Ki Bari. "; } }
-    if(sixCount>=3){ msg="❌ 3 Baar 6! Bari Khatam! "; sixCount=0; }
-  }
-  if(killMode && !jotaMode){
-    let kc=Math.floor(Math.random()*10);
-    if((d1===6||d1===3||d1===1) && kc<=3){ killHua=true; killedCount++; myCoins+=50; }
-  }
-  if(killHua){ msg+=" 💀 KILL! +50 Coins! Dobara Bari!"; document.getElementById("killMsg").innerText="💀 LAST KILL: "+killedCount+" Goti Kaat Di! 🔥"; }
-  else if(jotaMode){ msg+=" 🛡️ Jota Safe!"; }
-  document.getElementById("diceResult").innerText=msg;
-  document.getElementById("extraInfo").innerText="Jota: "+(jotaMode?"ON":"OFF")+" | Kill: "+(killMode?"ON":"OFF")+" | 2 Dice: "+(twoDiceMode?"ON":"OFF")+" | Total Kill: "+killedCount;
-  updateCoinsUI();
-}
-
-// ===== LOADING FIX - YEHI SAB SE ZAROORI HAI =====
-// 1.5 second baad Loading khud hi hat jayega, chahe koi bhi file fail ho!
-setTimeout(function(){
-  let load = document.getElementById("loadingScreen");
-  if(load) load.style.display = "none";
-  // Main Menu dikhao
-  document.getElementById("mainMenu").style.display = "flex";
-  document.getElementById("adminBtnRow").style.display = "none";
-  updateCoinsUI();
-}, 1500);
-
-// Backup - agar upar wala na chale to ye chalega
-window.addEventListener("load", function(){
-  setTimeout(function(){
-    let load = document.getElementById("loadingScreen");
-    if(load && load.style.display !== "none"){
-      load.style.display = "none";
-      document.getElementById("mainMenu").style.display = "flex";
-    }
-  }, 2000);
-});
-</script>
 </body>
 </html>
