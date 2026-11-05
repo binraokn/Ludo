@@ -1,29 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Binrao Luxury Ludo - Login</title>
+<title>BINRAO LUXURY LUDO</title>
 <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<h1>BINRAO LUXURY LUDO</h1>
 
-<div class="box" id="loginBox">
-<h2>LOGIN KARO</h2>
-<p>Apna Username Aur Password Likho</p>
-<input type="text" id="loginInput" placeholder="Username">
-<br><br>
-<input type="password" id="passInput" placeholder="Password">
-<br><br>
-<button onclick="doLogin()">LOGIN</button>
-<p id="loginMsg"></p>
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <h1 class="ludo-logo">BINRAO<br>LUDO ⭐</h1>
+  <p>BY</p>
+  <h3>BINRAO</h3>
+  <p class="loading-text">Loading...</p>
+  <div class="loader"></div>
 </div>
 
+<!-- MAIN MENU -->
+<div id="mainMenu" style="display:none;">
+  <div class="menu-bg">
+    <h1 class="ludo-logo-small">BINRAO<br>LUDO ⭐</h1>
+    <div class="dice-emoji">🎲</div>
+    <button class="btn-gold" onclick="goPhoneLogin()">📱 Phone se Login</button>
+    <button class="btn-gold" onclick="goGmailLogin()">📧 Gmail se Login</button>
+    <button class="btn-gold" onclick="goUsernameLogin()">👤 Username se Login</button>
+    <p class="terms"><input type="checkbox" id="agree" checked> I have read and agreed to the Terms of Service and Privacy policy</p>
+    <p class="menu-footer">Development by <b>Binrao</b> ❤️</p>
+  </div>
+</div>
+
+<!-- LOGIN BOX -->
+<div class="box" id="loginBox" style="display:none;">
+  <h2>LOGIN KARO</h2>
+  <p>Login ka tareeqa chuno:</p>
+  <button onclick="setLoginType('user')">Username</button>
+  <button onclick="setLoginType('phone')">Phone</button>
+  <button onclick="setLoginType('gmail')">Gmail</button>
+  <br><br>
+  <p id="loginTypeText">Username se Login</p>
+  <input type="text" id="loginInput" placeholder="Username">
+  <br><br>
+  <input type="password" id="passInput" placeholder="Password">
+  <br><br>
+  <button class="btn-gold" onclick="doLogin()">LOGIN</button>
+  <p id="loginMsg"></p>
+  <hr>
+  <p>Naya ho?</p>
+  <button class="btn-gold" onclick="showSignup()">CREATE NEW ACCOUNT</button>
+  <br><br>
+  <button onclick="backToMenu()">⬅ Menu Pe Wapis</button>
+</div>
+
+<!-- SIGNUP BOX -->
+<div class="box" id="signupBox" style="display:none;">
+  <h2>NEW ACCOUNT BANAO</h2>
+  <input type="text" id="newUser" placeholder="Naya Username">
+  <br><br>
+  <input type="text" id="newPhone" placeholder="Phone Number">
+  <br><br>
+  <input type="text" id="newGmail" placeholder="Gmail">
+  <br><br>
+  <input type="password" id="newPass" placeholder="Naya Password">
+  <br><br>
+  <button class="btn-gold" onclick="doSignup()">ACCOUNT BANAO</button>
+  <p id="signupMsg"></p>
+  <button onclick="showLogin()">Wapis Login Pe Jao</button>
+</div>
+
+<!-- GAME BOX -->
 <div class="box" id="gameBox" style="display:none;">
-<p id="player">Loading...</p>
-<p id="computer">Loading...</p>
-<h1 id="dice">Dice: -</h1>
-<button onclick="rollDice()">DICE PHENKO</button>
-<p id="status">Tumhari Baari Hai</p>
+  <p id="player">Loading...</p>
+  <p id="computer">Loading...</p>
+  <h1 id="dice">Dice: -</h1>
+  <button class="btn-gold" onclick="rollDice()">DICE PHENKO</button>
+  <p id="status">Tumhari Baari Hai</p>
 </div>
 
 <div class="footer">
