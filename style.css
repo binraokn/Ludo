@@ -1,4 +1,4 @@
-/* BINRAO LUDO - Premium Game Design */
+/* BINRAO LUDO - Premium Game Design - Tum wali file, fixed */
 
 :root {
   --gold: #ffd700;
@@ -21,6 +21,7 @@ body {
   background: linear-gradient(135deg, #101528, #202c50);
   color: white;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button {
@@ -44,12 +45,12 @@ input {
   margin: 7px 0;
 }
 
-.card, .panel, .profile-card {
+.card, .panel, .profile-card, .box {
   background: var(--card);
   border: 1px solid #394968;
   border-radius: 16px;
   padding: 18px;
-  margin: 12px 0;
+  margin: 12px;
 }
 
 h1, h2, h3 {
@@ -57,11 +58,13 @@ h1, h2, h3 {
   margin-bottom: 12px;
 }
 
-button.primary, .btn-primary {
+button.primary, .btn-primary, .btn {
   background: linear-gradient(135deg, var(--blue), var(--purple));
   color: white;
   padding: 13px 22px;
   border-radius: 12px;
+  width: 100%;
+  margin-top: 8px;
 }
 
 button.success {
@@ -78,19 +81,220 @@ button.danger {
   border-radius: 10px;
 }
 
-#gameBoard, .game-board {
+/* ===== LOGIN - CHARS ===== */
+.chars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+.char {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ffffff15;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  cursor: pointer;
+}
+.char.sel {
+  background: var(--gold);
+  transform: scale(1.12);
+}
+.btn-dark {
+  background: #101528 !important;
+  border: 1px solid var(--gold) !important;
+}
+
+/* ===== MAIN MENU - Tum wali photo wala ===== */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #0d1226;
+}
+.avatarWrap { position: relative; }
+.avatarWrap img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+}
+.starBadge {
+  position: absolute;
+  bottom: -8px;
+  left: -5px;
+  background: var(--gold);
+  color: #000;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.playerInfo { flex: 1; }
+.balance {
+  background: #00000060;
+  padding: 8px 10px;
+  border-radius: 20px;
+  font-weight: 900;
+  font-size: 13px;
+}
+.banner {
+  margin: 10px;
+  background: linear-gradient(90deg, #FF1744, #FF9800);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.banner button {
+  background: #fff;
+  color: #FF1744;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-weight: 900;
+}
+.gameModes { padding: 10px; }
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.modeCard {
+  width: 100%;
+  background: linear-gradient(180deg, #4CAF50, #1B5E20);
+  border: none;
+  padding: 14px;
+  border-radius: 18px;
+  margin: 7px 0;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+.card-2 { background: linear-gradient(180deg, #FFD54F, #FF6D00); }
+.card-4 { background: linear-gradient(180deg, #B388FF, #4527A0); }
+.modeCard h1 {
+  font-size: 72px;
+  line-height: 1;
+  color: #fff;
+  -webkit-text-stroke: 3px #fff;
+  text-shadow: 0 7px 0 rgba(0,0,0,.3);
+}
+.board-mini {
+  background: #fff;
+  color: #000;
+  border-radius: 12px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 20px;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 0 10px;
+}
+.small {
+  background: linear-gradient(180deg, #7B1FA2, #4A148C);
+  border: 1px solid #ffffff33;
+  border-radius: 14px;
+  padding: 14px 4px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 13px;
+}
+.small div { font-size: 30px; }
+.diceOptions, .storeSection {
+  background: #ffffff12;
+  margin: 10px;
+  padding: 12px;
+  border-radius: 14px;
+}
+.diceOptions label { display: block; margin: 6px 0; }
+.diceOptions input { width: auto; margin-right: 8px; }
+.storeSection button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--gold);
+  color: #000;
+  font-weight: 900;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* ===== GAME ===== */
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #000;
+}
+.gamePlayers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+.gamePlayers div {
+  background: #00000060;
+  padding: 6px;
+  border-radius: 10px;
+}
+.mic-mini {
+  background: var(--gold);
+  color: #000;
+  border-radius: 50%;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+
+/* ===== BOARD - YAHI FIX KIYA HAI ===== */
+/* Tum ne #gameBoard likha tha, HTML me #boardGrid hai, is liye dono likh diye */
+#gameBoard, .game-board, #ludoBoard {
   width: min(94vw, 500px);
-  aspect-ratio: 1;
-  margin: 20px auto;
+  margin: 10px auto;
   background: white;
   border: 5px solid var(--gold);
   border-radius: 10px;
-  display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(15, 1fr);
   overflow: hidden;
 }
+#boardGrid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  aspect-ratio: 1/1;
+  background: #fff;
+}
+.cell {
+  border: 0.5px solid #00000022;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  position: relative;
+}
 
+.diceBox { text-align: center; padding: 10px; }
+.diceBox button {
+  padding: 12px 20px;
+  background: var(--gold);
+  border: none;
+  border-radius: 12px;
+  font-weight: 900;
+  margin-top: 8px;
+  cursor: pointer;
+  color: #000;
+}
 .dice {
   width: 65px;
   height: 65px;
@@ -101,12 +305,21 @@ button.danger {
   place-items: center;
   font-size: 35px;
   box-shadow: 0 4px 15px #0006;
+  cursor: pointer;
 }
 
 .token, .gotii {
+  width: 85%;
+  height: 85%;
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 2px 8px #0008;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 .red { background: #ef3038; }
@@ -114,20 +327,63 @@ button.danger {
 .blue { background: #287bff; }
 .yellow { background: #ffd700; }
 
-.hidden {
-  display: none !important;
+/* ===== MIC - SIDE PAR, BEECH ME NAHI ===== */
+#micSide {
+  position: fixed;
+  right: 10px;
+  top: 48%;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(#FFD700, #FF9800);
+  border: 3px solid #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #000;
+  z-index: 999;
+  box-shadow: 0 5px 15px #000;
+  cursor: pointer;
+}
+#micSide small { font-size: 9px; font-weight: 900; }
+
+.voiceControls { text-align: center; padding-bottom: 20px; }
+.voiceControls button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #fff;
+  font-weight: 900;
+  margin: 5px;
+  cursor: pointer;
 }
 
+#settingsBox {
+  position: fixed;
+  inset: 0;
+  background: #000000aa;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.settingsCard {
+  background: #fff;
+  color: #222;
+  padding: 18px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 360px;
+}
+.settingsCard label { display: block; margin: 8px 0; }
+.settingsCard input { width: auto; margin-right: 8px; }
+
+.hidden { display: none !important; }
+
 @media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-
-  .card, .panel {
-    padding: 12px;
-  }
-
-  #gameBoard, .game-board {
-    width: 96vw;
-  }
+  body { font-size: 14px; }
+  .card, .panel { padding: 12px; }
+  #gameBoard, .game-board, #ludoBoard { width: 96vw; }
 }
