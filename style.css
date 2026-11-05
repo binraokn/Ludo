@@ -1,389 +1,117 @@
-/* BINRAO LUDO - Premium Game Design - Tum wali file, fixed */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{overflow-x:hidden;color:#fff}
 
-:root {
-  --gold: #ffd700;
-  --dark: #101528;
-  --blue: #1769ff;
-  --purple: #713cff;
-  --green: #16c784;
-  --red: #ff4757;
-  --card: #202b45;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* FULL PAGE - PHOTO HI BACKGROUND HOGI */
+.full-page{
+  min-height:100vh;
+  width:100%;
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  position:relative;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #101528, #202c50);
-  color: white;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* 1. LOGIN - TUM WALI PEHLI PHOTO */
+.login-page{
+  background-image:url('login-bg.jpg');
+  background-color:#1a0433;
+}
+/* Upar halka kaala shade taake likhai saaf nazar aaye */
+.dark-shade{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.75) 100%);
+}
+.login-content{position:relative;z-index:2;padding:20px;text-align:center}
+.gold-logo{
+  font-size:42px;color:#FFD700;margin-top:18px;
+  text-shadow:0 4px 0 #7a4a00, 0 8px 20px #000;
+  letter-spacing:1px;
+}
+.tagline{color:#fff;font-weight:900;letter-spacing:3px;margin:6px 0 14px}
+.top-chars{font-size:52px;margin:8px 0}
+.top-chars span{
+  background:rgba(255,255,255,0.25);
+  border:2px solid #FFD700;
+  border-radius:50%;
+  padding:6px;
+  margin:0 4px;
+  display:inline-block;
+}
+.login-card{
+  background:rgba(255,255,255,0.96);
+  border-radius:22px;
+  padding:18px;
+  margin-top:14px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+}
+.login-card input{
+  width:100%;padding:14px;border-radius:12px;
+  border:1px solid #ddd;margin:7px 0;font-size:16px;
+  background:#f8f8f8;color:#222;
+}
+.gold-btn{
+  width:100%;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(180deg,#FFE066,#FF9800);
+  font-weight:900;font-size:17px;cursor:pointer;
+  box-shadow:0 5px 0 #c66900;
+}
+.white-btn{
+  width:100%;padding:13px;border:none;border-radius:12px;
+  background:#1a0433;color:#fff;font-weight:900;margin-top:10px;cursor:pointer;
+}
+.guest-btn{
+  width:100%;padding:12px;border:1px solid #FFD700;border-radius:12px;
+  background:#fff;color:#222;font-weight:900;margin-top:10px;cursor:pointer;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  font-weight: bold;
-  transition: 0.2s;
+/* 2. MAIN MENU - DUSRI PHOTO - BLUE / ORANGE / PURPLE */
+.menu-page{
+  background-image:url('menu-bg.jpg');
+  background-color:#101528;
+}
+.topBar{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:8px;padding:12px;
+  background:rgba(0,0,0,0.35);
+}
+.avatarWrap{position:relative}
+.avatarWrap img{width:56px;height:56px;border-radius:50%;border:3px solid #FFD700}
+.starBadge{
+  position:absolute;bottom:-8px;left:-5px;background:#FFD700;color:#000;
+  font-size:10px;padding:2px 6px;border-radius:10px;font-weight:900;white-space:nowrap;
+}
+.playerInfo{flex:1}
+.balance{background:rgba(0,0,0,0.55);padding:8px 10px;border-radius:20px;font-weight:900;font-size:13px}
+.menu-content{position:relative;z-index:2;padding:10px}
+.menu-title{text-align:center;color:#FFD700;margin:10px 0;text-shadow:0 3px 8px #000}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modeCard{
+  width:100%;border:none;border-radius:20px;padding:16px;color:#fff;
+  font-weight:900;cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,0.45);
+}
+.card-2{background:linear-gradient(180deg,#FFD54F,#FF6D00)}
+.card-4{background:linear-gradient(180deg,#B388FF,#4527A0)}
+.modeCard h1{font-size:64px;line-height:1;color:#fff;-webkit-text-stroke:2px #fff;text-shadow:0 6px 0 rgba(0,0,0,0.3)}
+.long-card{background:linear-gradient(180deg,#4CAF50,#1B5E20);margin:8px 0;text-align:left;font-size:16px}
+.blue-card{background:linear-gradient(180deg,#42A5F5,#1565C0)}
+.purple-card{background:linear-gradient(180deg,#AB47BC,#4A148C)}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+.small{
+  background:linear-gradient(180deg,#7B1FA2,#4A148C);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:14px;padding:14px 4px;text-align:center;font-weight:900;font-size:13px;
 }
 
-button:active {
-  transform: scale(0.96);
-}
-
-input {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #526080;
-  background: #17213a;
-  color: white;
-  width: 100%;
-  margin: 7px 0;
-}
-
-.card, .panel, .profile-card, .box {
-  background: var(--card);
-  border: 1px solid #394968;
-  border-radius: 16px;
-  padding: 18px;
-  margin: 12px;
-}
-
-h1, h2, h3 {
-  color: var(--gold);
-  margin-bottom: 12px;
-}
-
-button.primary, .btn-primary, .btn {
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  color: white;
-  padding: 13px 22px;
-  border-radius: 12px;
-  width: 100%;
-  margin-top: 8px;
-}
-
-button.success {
-  background: var(--green);
-  color: white;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-button.danger {
-  background: var(--red);
-  color: white;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-/* ===== LOGIN - CHARS ===== */
-.chars {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 12px 0;
-}
-.char {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: #ffffff15;
-  border: 2px solid var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  cursor: pointer;
-}
-.char.sel {
-  background: var(--gold);
-  transform: scale(1.12);
-}
-.btn-dark {
-  background: #101528 !important;
-  border: 1px solid var(--gold) !important;
-}
-
-/* ===== MAIN MENU - Tum wali photo wala ===== */
-.topBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: #0d1226;
-}
-.avatarWrap { position: relative; }
-.avatarWrap img {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 3px solid var(--gold);
-}
-.starBadge {
-  position: absolute;
-  bottom: -8px;
-  left: -5px;
-  background: var(--gold);
-  color: #000;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-.playerInfo { flex: 1; }
-.balance {
-  background: #00000060;
-  padding: 8px 10px;
-  border-radius: 20px;
-  font-weight: 900;
-  font-size: 13px;
-}
-.banner {
-  margin: 10px;
-  background: linear-gradient(90deg, #FF1744, #FF9800);
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.banner button {
-  background: #fff;
-  color: #FF1744;
-  border: none;
-  padding: 9px 16px;
-  border-radius: 10px;
-  font-weight: 900;
-}
-.gameModes { padding: 10px; }
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.modeCard {
-  width: 100%;
-  background: linear-gradient(180deg, #4CAF50, #1B5E20);
-  border: none;
-  padding: 14px;
-  border-radius: 18px;
-  margin: 7px 0;
-  color: #fff;
-  font-weight: 900;
-  cursor: pointer;
-}
-.card-2 { background: linear-gradient(180deg, #FFD54F, #FF6D00); }
-.card-4 { background: linear-gradient(180deg, #B388FF, #4527A0); }
-.modeCard h1 {
-  font-size: 72px;
-  line-height: 1;
-  color: #fff;
-  -webkit-text-stroke: 3px #fff;
-  text-shadow: 0 7px 0 rgba(0,0,0,.3);
-}
-.board-mini {
-  background: #fff;
-  color: #000;
-  border-radius: 12px;
-  padding: 8px;
-  margin: 8px 0;
-  font-size: 20px;
-}
-.grid3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  padding: 0 10px;
-}
-.small {
-  background: linear-gradient(180deg, #7B1FA2, #4A148C);
-  border: 1px solid #ffffff33;
-  border-radius: 14px;
-  padding: 14px 4px;
-  text-align: center;
-  font-weight: 900;
-  font-size: 13px;
-}
-.small div { font-size: 30px; }
-.diceOptions, .storeSection {
-  background: #ffffff12;
-  margin: 10px;
-  padding: 12px;
-  border-radius: 14px;
-}
-.diceOptions label { display: block; margin: 6px 0; }
-.diceOptions input { width: auto; margin-right: 8px; }
-.storeSection button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 10px;
-  background: var(--gold);
-  color: #000;
-  font-weight: 900;
-  margin: 5px;
-  cursor: pointer;
-}
-
-/* ===== GAME ===== */
-.gameHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #000;
-}
-.gamePlayers {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 8px;
-  text-align: center;
-  font-size: 12px;
-}
-.gamePlayers div {
-  background: #00000060;
-  padding: 6px;
-  border-radius: 10px;
-}
-.mic-mini {
-  background: var(--gold);
-  color: #000;
-  border-radius: 50%;
-  padding: 2px 5px;
-  cursor: pointer;
-}
-
-/* ===== BOARD - YAHI FIX KIYA HAI ===== */
-/* Tum ne #gameBoard likha tha, HTML me #boardGrid hai, is liye dono likh diye */
-#gameBoard, .game-board, #ludoBoard {
-  width: min(94vw, 500px);
-  margin: 10px auto;
-  background: white;
-  border: 5px solid var(--gold);
-  border-radius: 10px;
-  overflow: hidden;
-}
-#boardGrid {
-  display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  aspect-ratio: 1/1;
-  background: #fff;
-}
-.cell {
-  border: 0.5px solid #00000022;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  position: relative;
-}
-
-.diceBox { text-align: center; padding: 10px; }
-.diceBox button {
-  padding: 12px 20px;
-  background: var(--gold);
-  border: none;
-  border-radius: 12px;
-  font-weight: 900;
-  margin-top: 8px;
-  cursor: pointer;
-  color: #000;
-}
-.dice {
-  width: 65px;
-  height: 65px;
-  background: white;
-  color: #111;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-size: 35px;
-  box-shadow: 0 4px 15px #0006;
-  cursor: pointer;
-}
-
-.token, .gotii {
-  width: 85%;
-  height: 85%;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 2px 8px #0008;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.red { background: #ef3038; }
-.green { background: #16c784; }
-.blue { background: #287bff; }
-.yellow { background: #ffd700; }
-
-/* ===== MIC - SIDE PAR, BEECH ME NAHI ===== */
-#micSide {
-  position: fixed;
-  right: 10px;
-  top: 48%;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(#FFD700, #FF9800);
-  border: 3px solid #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  color: #000;
-  z-index: 999;
-  box-shadow: 0 5px 15px #000;
-  cursor: pointer;
-}
-#micSide small { font-size: 9px; font-weight: 900; }
-
-.voiceControls { text-align: center; padding-bottom: 20px; }
-.voiceControls button {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-  background: #fff;
-  font-weight: 900;
-  margin: 5px;
-  cursor: pointer;
-}
-
-#settingsBox {
-  position: fixed;
-  inset: 0;
-  background: #000000aa;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-.settingsCard {
-  background: #fff;
-  color: #222;
-  padding: 18px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 360px;
-}
-.settingsCard label { display: block; margin: 8px 0; }
-.settingsCard input { width: auto; margin-right: 8px; }
-
-.hidden { display: none !important; }
-
-@media (max-width: 600px) {
-  body { font-size: 14px; }
-  .card, .panel { padding: 12px; }
-  #gameBoard, .game-board, #ludoBoard { width: 96vw; }
-}
+/* 3. GAME BOARD */
+.game-page{background-image:url('board-bg.jpg');background-color:#1a0433}
+.gameHeader{display:flex;justify-content:space-between;padding:12px;background:#000}
+.gamePlayers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;text-align:center;font-size:12px}
+.gamePlayers div{background:rgba(0,0,0,0.6);padding:8px;border-radius:10px}
+#ludoBoard{width:96vw;max-width:420px;margin:10px auto;background:#fff;border:4px solid #FFD700;border-radius:10px;overflow:hidden}
+#boardGrid{display:grid;grid-template-columns:repeat(15,1fr);aspect-ratio:1/1}
+.cell{border:0.5px solid #00000022;display:flex;align-items:center;justify-content:center;font-size:9px}
+.token{width:85%;height:85%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid #fff;box-shadow:0 2px 4px #000;cursor:pointer}
+.diceBox{text-align:center;padding:10px}
+.dice{display:inline-block;font-size:44px;background:#fff;border-radius:12px;padding:4px 10px;margin:4px}
+.diceBox button{padding:12px 22px;background:#FFD700;border:none;border-radius:12px;font-weight:900;margin-top:8px;cursor:pointer}
