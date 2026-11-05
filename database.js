@@ -1,106 +1,127 @@
-// ==========================================
-// BINRAO LUDO STAR - FIREBASE DATABASE
-// ==========================================
+// =====================================
+// BINRAO LUDO - FIREBASE DATABASE
+// =====================================
 
-// Firebase SDK ko connect karna
-(async function () {
-  try {
-    const { initializeApp } = await import(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"
-    );
+const firebaseConfig = {
+  apiKey: "AIzaSyCWSLFenBlxR4IrBE21-9xj2ho5YLenoko",
+  authDomain: "ludu-star-c1b9c.firebaseapp.com",
+  projectId: "ludu-star-c1b9c",
+  storageBucket: "ludu-star-c1b9c.firebasestorage.app",
+  messagingSenderId: "1074036526285",
+  appId: "1:107403652628:web:ffdbdb69eb3f0471aead84",
+  measurementId: "G-2PD9W2FC5N"
+};
 
-    const {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } = await import(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"
-    );
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-    const {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      serverTimestamp
-    } = await import(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"
-    );
+const auth = firebase.auth();
+const db = firebase.firestore();
+const app = firebase.app();
 
-    // Tumhara Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCWSLFenBlxR4IrBE21-9xj2ho5YLenoko",
-      authDomain: "ludu-star-c1b9c.firebaseapp.com",
-      projectId: "ludu-star-c1b9c",
-      storageBucket: "ludu-star-c1b9c.firebasestorage.app",
-      messagingSenderId: "1074036526285",
-      appId: "1:1074036526285:web:ffdbdb69eb3f0471aead84",
-      measurementId: "G-2PD9W2FC5N"
-    };
+// Offline database cache
+db.enablePersistence({ synchronizeTabs: true })
+  .catch(error => {
+    console.log("Offline cache:", error.code);
+  });
 
-    // Firebase Initialize
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+// Player profile location
+function profileRef(uid) {
+  return db.doc(`users/${uid}/private/profile`);
+}
 
-    // Account Create
-    async function signup(email, password, username) {
-      const result = await createUserWithEmailAndPassword(
-        auth, email, password
-      );
+// Create new player
+async function signup(email, password, username) {
+  const result = await auth.createUserWithEmailAndPassword(
+    email,
+    password
+  );
 
-      await setDoc(doc(db, "users", result.user.uid), {
-        username: username,
-        coins: 5000,
-        gems: 0,
-        level: 1,
-        role: "player",
-        createdAt: serverTimestamp()
-      });
+  const player = {
+    uid: result.user.uid,
+    username: username,
+    coins: 5000,
+    gems: 0,
+    level: 1,
+    avatar: "",
+    vip: "Normal",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
 
-      return result.user;
-    }
+  await profileRef(result.user.uid).set(player);
 
-    // Account Login
-    async function login(email, password) {
-      const result = await signInWithEmailAndPassword(
-        auth, email, password
-      );
+  return player;
+}
 
-      return result.user;
-    }
+// Login player
+async function login(email, password) {
+  const result = await auth.signInWithEmailAndPassword(
+    email,
+    password
+  );
 
-    // Player Data
-    async function getPlayer(uid) {
-      const result = await getDoc(doc(db, "users", uid));
-      return result.exists() ? result.data() : null;
-    }
+  return result.user;
+}
 
-    // Logout
-    async function logout() {
-      await signOut(auth);
-    }
+// Get player data
+async function getPlayer(uid) {
+  uid = uid || auth.currentUser?.uid;
 
-    // Global Database System
-    window.BinraoDB = {
-      app,
-      auth,
-      db,
-      signup,
-      login,
-      getPlayer,
-      logout,
-      onAuthStateChanged
-    };
-
-    console.log("BINRAO LUDO STAR Firebase Connected!");
-
-    window.dispatchEvent(new Event("binrao-firebase-ready"));
-
-  } catch (error) {
-    console.error("Firebase Error:", error);
-    window.BINRAO_FIREBASE_ERROR = error.message;
+  if (!uid) {
+    throw new Error("Player login required");
   }
-})();
+
+  const snapshot = await profileRef(uid).get();
+
+  if (!snapshot.exists) {
+    throw new Error("Player profile not found");
+  }
+
+  return snapshot.data();
+}
+
+// Update safe profile fields
+async function savePlayer(data) {
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("Login required");
+  }
+
+  const allowed = {};
+
+  ["username", "avatar", "settings"].forEach(key => {
+    if (data[key] !== undefined) {
+      allowed[key] = data[key];
+    }
+  });
+
+  await profileRef(user.uid).update(allowed);
+}
+
+// Logout
+async function logout() {
+  await auth.signOut();
+}
+
+// Authentication listener
+function onAuthStateChanged(callback) {
+  return auth.onAuthStateChanged(callback);
+}
+
+// Global database connection
+window.BinraoDB = {
+  app,
+  auth,
+  db,
+  signup,
+  login,
+  getPlayer,
+  savePlayer,
+  logout,
+  onAuthStateChanged
+};
+
+console.log("BINRAO LUDO DATABASE CONNECTED");
