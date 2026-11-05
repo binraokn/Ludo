@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Binrao Ludo Star - Photo Jaisa</title>
+<title>Binrao Ludo Star</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
 body { background:#5b1a5e; color:white; overflow-x:hidden; }
@@ -11,18 +11,16 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
 #loadingScreen h1 { font-size:48px; color:#ffd700; text-align:center; }
 #mainMenu, #loginBox, #signupBox, #gameBox, #storeBox, #levelBox, #adminBox { display:none; }
 #mainMenu { display:none; flex-direction:column; min-height:100vh; padding:10px 10px 80px; background:linear-gradient(180deg,#7e2a7e 0%, #5b1a5e 40%, #4a1259 100%); position:relative; }
-/* TOP BAR - PHOTO JAISA */
 .topBar { display:flex; align-items:center; gap:5px; }
 .avatarWrap { position:relative; }
 .avatarWrap img { width:52px; height:52px; border-radius:50%; border:3px solid #ffd700; background:#ddd; }
-.starBadge { position:absolute; bottom:-8px; left:0; background:#2a0a2e; border-radius:12px; padding:1px 6px; font-size:11px; font-weight:bold; display:flex; align-items:center; gap:2px; border:1px solid #ffd700; }
+.starBadge { position:absolute; bottom:-8px; left:0; background:#2a0a2e; border-radius:12px; padding:1px 6px; font-size:11px; font-weight:bold; display:flex; align-items:center; gap:2px; border:1px solid #ffd700; white-space:nowrap; }
 .pill { flex:1; background:#2a0a2e; border-radius:20px; padding:5px 6px; display:flex; align-items:center; gap:4px; font-weight:bold; font-size:14px; border:1px solid rgba(255,255,255,0.2); }
-.pill .plus { background:#22c55e; width:20px; height:20px; border-radius:50%; text-align:center; line-height:20px; font-size:14px; }
+.pill .plus { background:#22c55e; width:20px; height:20px; border-radius:50%; text-align:center; line-height:20px; font-size:14px; cursor:pointer; }
 .settingsBtn { font-size:28px; background:none; border:none; cursor:pointer; }
-/* MIDDLE ROW - PHOTO JAISA */
 .midRow { display:flex; gap:8px; margin-top:16px; }
 .leftCol { display:flex; flex-direction:column; gap:10px; width:58px; }
-.leftIcon { background:#facc15; border-radius:10px; padding:8px 4px; text-align:center; font-size:24px; position:relative; border:2px solid #fff; }
+.leftIcon { background:#facc15; border-radius:10px; padding:8px 4px; text-align:center; font-size:24px; position:relative; border:2px solid #fff; cursor:pointer; }
 .leftIcon small { display:block; font-size:9px; color:#111; font-weight:bold; }
 .badge6 { position:absolute; top:-8px; right:-6px; background:#dc2626; color:white; width:20px; height:20px; border-radius:50%; font-size:12px; line-height:20px; font-weight:bold; }
 .centerCol { flex:1; display:flex; flex-direction:column; gap:8px; }
@@ -30,7 +28,7 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
 .lockBox { flex:1; background:linear-gradient(180deg,#a855f7,#7e22ce); border-radius:12px; padding:8px 4px; text-align:center; border:2px solid #facc15; }
 .lockBox span { font-size:22px; }
 .lockBox small { display:block; font-size:10px; }
-.offerBox { background:linear-gradient(90deg,#1e1b4b,#7c3aed,#1e1b4b); border:2px solid #facc15; border-radius:12px; padding:6px; position:relative; overflow:hidden; }
+.offerBox { background:linear-gradient(90deg,#1e1b4b,#7c3aed,#1e1b4b); border:2px solid #facc15; border-radius:12px; padding:6px; }
 .offerTop { display:flex; justify-content:space-between; font-size:11px; font-weight:bold; }
 .offerTop b { background:#dc2626; padding:2px 8px; border-radius:6px; }
 .offerMid { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
@@ -40,30 +38,27 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
 .rightIcon { font-size:32px; text-align:center; position:relative; }
 .rightIcon small { display:block; font-size:9px; }
 .badge1 { position:absolute; top:-4px; right:-2px; background:#dc2626; color:white; width:18px; height:18px; border-radius:50%; font-size:11px; line-height:18px; }
-/* LUDO STAR WATERMARK */
-.watermark { text-align:center; font-size:38px; font-weight:900; color:rgba(255,255,255,0.08); line-height:1; margin:10px 0 0; letter-spacing:2px; }
-/* BIG BUTTONS - PHOTO JAISA */
+.watermark { text-align:center; font-size:38px; font-weight:900; color:rgba(255,255,255,0.08); line-height:1; margin:10px 0 0; }
 .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
-.bigCard { border:none; border-radius:16px; padding:14px 6px 10px; color:white; font-weight:900; cursor:pointer; position:relative; overflow:hidden; }
+.bigCard { border:none; border-radius:16px; padding:14px 6px 10px; color:white; font-weight:900; cursor:pointer; }
 .bigCard .num { font-size:52px; line-height:1; }
 .bigCard .diceRow { font-size:28px; }
 .bigCard p { margin-top:6px; font-size:15px; }
 .card2 { background:linear-gradient(180deg,#fbbf24,#f97316); box-shadow:0 6px 0 #9a3412; }
 .card4 { background:linear-gradient(180deg,#818cf8,#4f46e5); box-shadow:0 6px 0 #1e1b4b; }
 .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px; }
-.smallCard { background:#6d28d9; border:none; color:white; border-radius:14px; padding:10px 4px 8px; font-weight:bold; cursor:pointer; position:relative; }
+.smallCard { background:#6d28d9; border:none; color:white; border-radius:14px; padding:10px 4px 8px; font-weight:bold; cursor:pointer; }
 .smallCard .emoji { font-size:28px; }
 .smallCard small { display:block; font-size:11px; margin-top:4px; }
-/* ADMIN - SIRF ADMIN LOGIN KE BAAD */
 .adminWrap { display:none; margin-top:12px; }
-.adminBigBtn { width:100%; padding:13px; border:2px solid #ffd700; border-radius:12px; background:#dc2626; color:white; font-weight:bold; font-size:16px; }
+.adminBigBtn { width:100%; padding:13px; border:2px solid #ffd700; border-radius:12px; background:#dc2626; color:white; font-weight:bold; font-size:16px; cursor:pointer; }
 .box { background:white; color:#111; margin:20px; padding:20px; border-radius:18px; text-align:center; }
 .box input { width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:10px; font-size:16px; }
-.btn { width:100%; padding:13px; border:none; border-radius:12px; background:#7c3aed; color:white; font-weight:bold; font-size:16px; margin-top:10px; }
+.btn { width:100%; padding:13px; border:none; border-radius:12px; background:#7c3aed; color:white; font-weight:bold; font-size:16px; margin-top:10px; cursor:pointer; }
 .btn.green { background:#16a34a; }
 .btn.gold { background:#eab308; color:#111; }
 .btn:disabled { background:#9ca3af !important; }
-.link { color:#7c3aed; margin-top:10px; display:block; }
+.link { color:#7c3aed; margin-top:10px; display:block; cursor:pointer; }
 #gameBox { padding:16px; text-align:center; background:linear-gradient(180deg,#7e2a7e,#4a1259); min-height:100vh; }
 .diceBox { background:white; color:#111; border-radius:20px; padding:20px; margin-top:16px; }
 .dice { font-size:60px; }
@@ -74,10 +69,10 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
 .navItem .homeIcon { font-size:38px; margin-top:-18px; background:#eab308; border-radius:50%; width:52px; height:52px; line-height:52px; }
 #settingsBox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
 .settingsCard { background:linear-gradient(180deg,#c026d3,#4c1d95); border:3px solid #facc15; border-radius:20px; width:100%; max-width:380px; padding:20px; position:relative; margin:auto; }
-.closeBtn { position:absolute; top:-10px; right:-5px; background:#f97316; color:white; border:none; width:35px; height:35px; border-radius:8px; font-size:20px; font-weight:bold; }
+.closeBtn { position:absolute; top:-10px; right:-5px; background:#f97316; color:white; border:none; width:35px; height:35px; border-radius:8px; font-size:20px; font-weight:bold; cursor:pointer; }
 .setRow { display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); padding:12px; border-radius:12px; margin:8px 0; }
 .setRow input { width:24px; height:24px; }
-.setBtn { background:#1e3a8a; color:white; border:none; padding:8px 18px; border-radius:10px; font-weight:bold; }
+.setBtn { background:#1e3a8a; color:white; border:none; padding:8px 18px; border-radius:10px; font-weight:bold; cursor:pointer; }
 .setBtn.red { background:#dc2626; }
 .storeItem { background:#f3f4f6; border-radius:12px; padding:12px; margin:10px 0; display:flex; justify-content:space-between; align-items:center; text-align:left; }
 .storeItem b { display:block; }
@@ -108,18 +103,14 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
   <span class="link" onclick="showLogin()">Pehle se Account hai? Login Karo</span>
 </div>
 
-<!-- MAIN PAGE - PHOTO JAISA -->
 <div id="mainMenu">
-  <!-- TOP BAR PHOTO JAISA -->
   <div class="topBar">
     <div class="avatarWrap"><img src="https://via.placeholder.com/52"><div class="starBadge">⭐ <span id="levelText">49 / 75</span></div></div>
     <div class="pill">🪙 <span id="topCoins">7050</span> <span class="plus" onclick="openStore()">+</span></div>
     <div class="pill">💎 <span id="topGems">89</span> <span class="plus" onclick="openStore()">+</span></div>
-    <div class="pill" style="flex:0.6; justify-content:center;">🎰 <span id="topTicket">0</span> <span class="plus">+</span></div>
+    <div class="pill" style="flex:0.6; justify-content:center;">🎰 <span>0</span> <span class="plus">+</span></div>
     <button class="settingsBtn" onclick="openSettings()">⚙️</button>
   </div>
-
-  <!-- MIDDLE PHOTO JAISA -->
   <div class="midRow">
     <div class="leftCol">
       <div class="leftIcon" onclick="alert('Video: Rozana Video Dekh Ke Coins Kamao!')">🎬<span class="badge6">6</span><small>Video</small></div>
@@ -142,16 +133,11 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
       <div class="rightIcon">🗿<small style="background:#dc2626; color:white; padding:1px 6px; border-radius:8px;">Sale!</small></div>
     </div>
   </div>
-
-  <!-- ADMIN TRANSFER - SIRF ADMIN LOGIN KE BAAD DIKHEGA -->
   <div id="adminBtnRow" class="adminWrap">
     <button class="adminBigBtn" onclick="openAdmin()">👑 ADMIN - Transfer Coins / Gems</button>
     <p style="text-align:center; font-size:12px; margin-top:5px;">Sirf Binrao Ko Dikhega - Baaki Ko Nahi!</p>
   </div>
-
   <div class="watermark">LUDO<br>STAR</div>
-
-  <!-- 2 PLAYER / 4 PLAYER - PHOTO JAISA -->
   <div class="grid2">
     <button class="bigCard card2" onclick="startGame('2 Player')"><div class="diceRow">🎲 🎲</div><div class="num">2️⃣</div><p>2 Player</p></button>
     <button class="bigCard card4" onclick="startGame('4 Player')"><div class="diceRow">🎲 🎲</div><div class="num">4️⃣</div><p>4 Player</p></button>
@@ -162,8 +148,6 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
     <button class="smallCard" onclick="startGame('Friends')"><div class="emoji">😎</div><small>Team Up Friends</small></button>
   </div>
   <div style="text-align:center; margin-top:10px;"><label><input type="checkbox" id="agree"> Terms Accept Karta Hun</label></div>
-
-  <!-- BOTTOM NAV - PHOTO JAISA -->
   <div class="bottomNav">
     <div class="navItem" onclick="openStore()"><div>🛒</div>Shop</div>
     <div class="navItem" onclick="alert('Friends: Abhi koi friend online nahi hai')"><div>👥</div>Friends</div>
@@ -188,7 +172,7 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
 
 <div id="levelBox" class="box">
   <h2>⭐ LEVEL - <span id="levelTitle">49 / 75</span></h2>
-  <p id="levelInfo">Tum Level 49 pe ho!</p>
+  <p id="levelInfo">Tum Level 49 / 75 pe ho!</p>
   <div style="background:#e5e7eb; height:20px; border-radius:10px; overflow:hidden;"><div id="levelFill2" style="background:#ffd700; height:100%; width:65%;"></div></div>
   <p style="margin-top:10px;">👑 Admin = Level 999<br>👤 Normal Player = Level 49 / 75</p>
   <button class="btn" onclick="backToMenu()">Back</button>
@@ -243,11 +227,71 @@ body { background:#5b1a5e; color:white; overflow-x:hidden; }
   </div>
 </div>
 
-<script src="login.js"></script>
+<!-- LOGIN.JS KO HATA DIYA - SAB KUCH ISI FILE ME HAI, TAKRAO KHATAM -->
 <script>
+// ===== SAB KUCH ISI FILE ME - KOI BAHAR WALI FILE NAHI CHAHIYE =====
 let sixCount = 0, killedCount = 0, soundOn = true, jotaMode = false, twoDiceMode = false, killMode = true;
 let myCoins = 7050, myGems = 89, myLevelText = "49 / 75", currentUser = "";
 let isAdminNow = false;
+
+function hideAll(){
+  ["loadingScreen","mainMenu","loginBox","signupBox","gameBox","storeBox","levelBox","adminBox"].forEach(id=>{
+    let el = document.getElementById(id);
+    if(el) el.style.display = "none";
+  });
+}
+function showLogin(){
+  hideAll();
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("loginTypeText").innerText = "Username se Login";
+}
+function setLoginType(t){ showLogin(); }
+function showSignup(){
+  hideAll();
+  document.getElementById("signupBox").style.display = "block";
+}
+function backToMenu(){
+  hideAll();
+  document.getElementById("mainMenu").style.display = "flex";
+  updateCoinsUI();
+}
+function doLogin(){
+  let u = document.getElementById("loginInput").value.trim();
+  let p = document.getElementById("passInput").value.trim();
+  if(!u || !p){ document.getElementById("loginMsg").innerText = "Username + Password Likho!"; return; }
+  if(u === "Binrao" && p === "Binrao123"){
+    document.getElementById("player").innerText = "Player: Binrao 👑";
+    checkAdmin();
+    hideAll();
+    document.getElementById("mainMenu").style.display = "flex";
+    updateCoinsUI();
+    return;
+  }
+  let users = JSON.parse(localStorage.getItem("binrao_users") || "[]");
+  let found = users.find(x => x.user === u && x.pass === p);
+  if(found){
+    document.getElementById("player").innerText = "Player: " + u;
+    checkAdmin();
+    hideAll();
+    document.getElementById("mainMenu").style.display = "flex";
+    updateCoinsUI();
+  } else {
+    document.getElementById("loginMsg").innerText = "Galat Username ya Password! Pehle Signup Karo!";
+  }
+}
+function doSignup(){
+  let u = document.getElementById("newUser").value.trim();
+  let ph = document.getElementById("newPhone").value.trim();
+  let g = document.getElementById("newGmail").value.trim();
+  let p = document.getElementById("newPass").value.trim();
+  if(!u || !p){ document.getElementById("signupMsg").innerText = "Username + Password Zaroori Hai!"; return; }
+  let users = JSON.parse(localStorage.getItem("binrao_users") || "[]");
+  if(users.find(x => x.user === u)){ document.getElementById("signupMsg").innerText = "Ye Username Pehle Se Hai!"; return; }
+  users.push({user:u, phone:ph, gmail:g, pass:p});
+  localStorage.setItem("binrao_users", JSON.stringify(users));
+  document.getElementById("signupMsg").innerText = "Account Ban Gaya! Ab Login Karo ✅";
+  setTimeout(showLogin, 1000);
+}
 function formatCoins(n){ if(n >= 1000000000) return (n/1000000000).toFixed(1).replace(".0","") + "B"; if(n >= 1000000) return (n/1000000).toFixed(1).replace(".0","") + "M"; if(n >= 1000) return (n/1000).toFixed(1).replace(".0","") + "K"; return n.toString(); }
 function openSettings(){ document.getElementById("settingsBox").style.display = "flex"; }
 function closeSettings(){ document.getElementById("settingsBox").style.display = "none"; }
@@ -285,7 +329,7 @@ function claimDaily(){ alert("Daily Reward: Store Me Jao, Free Gift Lo! 🎁"); 
 function openStore(){ hideAll(); document.getElementById("storeBox").style.display="block"; updateCoinsUI(); }
 function openLevel(){ hideAll(); document.getElementById("levelBox").style.display="block"; updateCoinsUI(); }
 function openAdmin(){ if(!isAdminNow){ alert("Ye Sirf Admin Ke Liye Hai! Pehle Admin Login Karo!"); return; } hideAll(); document.getElementById("adminBox").style.display="block"; }
-function startGame(mode){ if(!document.getElementById("agree").checked){ alert("Pehle Terms pe Tick karo!"); return; } showLogin(); setLoginType('user'); }
+function startGame(mode){ if(!document.getElementById("agree").checked){ alert("Pehle Terms pe Tick karo!"); return; } showLogin(); }
 function claimFree(){
   let claimed = localStorage.getItem("binrao_free_claimed");
   if(claimed === "yes"){ alert("Ye FREE Pehle Hi Le Liya Hai! Dobara Nahi Milega!"); return; }
@@ -354,7 +398,28 @@ function rollDice(){
   document.getElementById("extraInfo").innerText="Jota: "+(jotaMode?"ON":"OFF")+" | Kill: "+(killMode?"ON":"OFF")+" | 2 Dice: "+(twoDiceMode?"ON":"OFF")+" | Total Kill: "+killedCount;
   updateCoinsUI();
 }
-window.onload = function(){ document.getElementById("adminBtnRow").style.display = "none"; updateCoinsUI(); };
+
+// ===== LOADING FIX - YEHI SAB SE ZAROORI HAI =====
+// 1.5 second baad Loading khud hi hat jayega, chahe koi bhi file fail ho!
+setTimeout(function(){
+  let load = document.getElementById("loadingScreen");
+  if(load) load.style.display = "none";
+  // Main Menu dikhao
+  document.getElementById("mainMenu").style.display = "flex";
+  document.getElementById("adminBtnRow").style.display = "none";
+  updateCoinsUI();
+}, 1500);
+
+// Backup - agar upar wala na chale to ye chalega
+window.addEventListener("load", function(){
+  setTimeout(function(){
+    let load = document.getElementById("loadingScreen");
+    if(load && load.style.display !== "none"){
+      load.style.display = "none";
+      document.getElementById("mainMenu").style.display = "flex";
+    }
+  }, 2000);
+});
 </script>
 </body>
 </html>
