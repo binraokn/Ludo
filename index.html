@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Binrao Luxury Ludo</title>
+<title>Binrao Luxury Ludo - Login</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>BINRAO LUXURY LUDO</h1>
-<div class="box">
+
+<div class="box" id="loginBox">
+<h2>LOGIN KARO</h2>
+<p>Username / Phone / Gmail likho</p>
+<input type="text" id="loginInput" placeholder="Binrao / 03036862873 / Gmail">
+<br><br>
+<input type="password" id="passInput" placeholder="Password: Khalidks1">
+<br><br>
+<button onclick="doLogin()">LOGIN</button>
+<p id="loginMsg"></p>
+</div>
+
+<div class="box" id="gameBox" style="display:none;">
 <p id="player">Loading...</p>
 <p id="computer">Loading...</p>
 <h1 id="dice">Dice: -</h1>
@@ -21,6 +33,7 @@
 
 <script src="database.js"></script>
 <script src="admin.js"></script>
+<script src="login.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
