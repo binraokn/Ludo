@@ -1,225 +1,256 @@
-/* =====================================
-   BINRAO LUDO STAR
-   LOGIN & SIGNUP SYSTEM
-   Local Demo Version
-===================================== */
+// ======================================
+// BINRAO LUDO - FIREBASE LOGIN SYSTEM
+// ======================================
 
-let currentUser = null;
+const firebaseConfig = {
+  apiKey: "AIzaSyCWSLFenBlxR4IrBE21-9xj2ho5YLenoko",
+  authDomain: "ludu-star-c1b9c.firebaseapp.com",
+  projectId: "ludu-star-c1b9c",
+  storageBucket: "ludu-star-c1b9c.firebasestorage.app",
+  messagingSenderId: "1074036526285",
+  appId: "1:107403652628:web:ffdbdb69eb3f0471aead84",
+  measurementId: "G-2PD9W2FC5N"
+};
 
-const USERS_KEY = "binrao_users";
-const SESSION_KEY = "binrao_session";
+let auth;
+let db;
+let firebaseAppReady = false;
 
-// Get saved users
-function getUsers() {
+const firebaseReady = (async () => {
   try {
-    return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+    const appSDK = await import(
+      "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"
+    );
+
+    const authSDK = await import(
+      "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"
+    );
+
+    const dbSDK = await import(
+      "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"
+    );
+
+    const app = appSDK.initializeApp(firebaseConfig);
+
+    auth = authSDK.getAuth(app);
+    db = dbSDK.getFirestore(app);
+
+    firebaseAppReady = true;
+    console.log("BINRAO LUDO Firebase Connected");
+
+    return { authSDK, dbSDK };
+
   } catch (error) {
-    return [];
+    console.error("Firebase Error:", error);
+    throw error;
+  }
+})();
+
+function showMessage(id, message, color = "red") {
+  const el = document.getElementById(id);
+  if (el) {
+    el.innerText = message;
+    el.style.color = color;
   }
 }
 
-// Save users
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-// Hide all screens
-function hideAll() {
-  const screens = [
+function hideAuthScreens() {
+  [
+    "loadingScreen",
+    "mainMenu",
     "loginBox",
     "signupBox",
-    "mainMenu",
     "gameBox",
     "storeBox",
+    "levelBox",
     "adminBox"
-  ];
-
-  screens.forEach(id => {
-    const element = document.getElementById(id);
-    if (element) element.style.display = "none";
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
   });
 }
 
-// Show login
 function showLogin() {
-  hideAll();
+  hideAuthScreens();
 
-  const login = document.getElementById("loginBox");
-  if (login) login.style.display = "flex";
+  document.getElementById("loginBox").style.display = "block";
 
-  const message = document.getElementById("loginMsg");
-  if (message) message.innerText = "";
+  const input = document.getElementById("loginInput");
+  input.type = "email";
+  input.placeholder = "Gmail / Email";
+
+  document.getElementById("loginTypeText").innerText =
+    "Email se Login";
 }
 
-// Show signup
 function showSignup() {
-  hideAll();
-
-  const signup = document.getElementById("signupBox");
-  if (signup) signup.style.display = "block";
-
-  const message = document.getElementById("signupMsg");
-  if (message) message.innerText = "";
+  hideAuthScreens();
+  document.getElementById("signupBox").style.display = "block";
 }
 
-// Show main menu
-function showMainMenu() {
-  hideAll();
-
-  const menu = document.getElementById("mainMenu");
-  if (menu) menu.style.display = "flex";
-
-  const coins = document.getElementById("topCoins");
-  const gems = document.getElementById("topGems");
-
-  if (coins) coins.innerText = "7050";
-  if (gems) gems.innerText = "89";
-
-  const adminButton = document.getElementById("adminBtnRow");
-  if (adminButton) adminButton.style.display = "none";
-}
-
-// Signup
-function doSignup() {
-  const username = document
-    .getElementById("newUser").value.trim();
-
-  const phone = document
-    .getElementById("newPhone").value.trim();
-
-  const email = document
-    .getElementById("newGmail").value.trim().toLowerCase();
-
-  const password = document
-    .getElementById("newPass").value;
-
-  const message = document.getElementById("signupMsg");
-
-  if (!username || !phone || !email || !password) {
-    message.innerText = "Please fill in all fields!";
-    return;
-  }
-
-  if (password.length < 6) {
-    message.innerText = "Password must be at least 6 characters!";
-    return;
-  }
-
-  const users = getUsers();
-
-  const exists = users.some(user =>
-    user.username.toLowerCase() === username.toLowerCase() ||
-    user.phone === phone ||
-    user.email === email
-  );
-
-  if (exists) {
-    message.innerText = "Account already exists. Please login.";
-    return;
-  }
-
-  users.push({
-    username: username,
-    phone: phone,
-    email: email,
-    password: password,
-    coins: 7050,
-    gems: 89,
-    level: 1
-  });
-
-  saveUsers(users);
-
-  message.innerText = "Account created! Please login.";
-
-  document.getElementById("newUser").value = "";
-  document.getElementById("newPhone").value = "";
-  document.getElementById("newGmail").value = "";
-  document.getElementById("newPass").value = "";
-
-  showLogin();
-}
-
-// Login
-function doLogin() {
-  const input = document
-    .getElementById("loginInput").value.trim();
-
-  const password = document
-    .getElementById("passInput").value;
-
-  const message = document.getElementById("loginMsg");
-
-  if (!input || !password) {
-    message.innerText = "Enter username and password!";
-    return;
-  }
-
-  const users = getUsers();
-
-  const user = users.find(item =>
-    (
-      item.username.toLowerCase() === input.toLowerCase() ||
-      item.phone === input ||
-      item.email.toLowerCase() === input.toLowerCase()
-    ) && item.password === password
-  );
-
-  if (!user) {
-    message.innerText = "Incorrect login details!";
-    return;
-  }
-
-  currentUser = user;
-
-  sessionStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify({
-      username: user.username
-    })
-  );
-
-  document.getElementById("loginInput").value = "";
-  document.getElementById("passInput").value = "";
-
-  const level = document.getElementById("levelText");
-  if (level) level.innerText = "Level " + user.level;
-
-  showMainMenu();
-}
-
-// Back to menu
 function backToMenu() {
-  if (!currentUser) {
-    showLogin();
-    return;
+  hideAuthScreens();
+  document.getElementById("mainMenu").style.display = "flex";
+
+  if (typeof updateCoinsUI === "function") {
+    updateCoinsUI();
   }
-
-  showMainMenu();
 }
 
-// Logout
-function doLogout() {
-  currentUser = null;
-  sessionStorage.removeItem(SESSION_KEY);
+async function doSignup() {
+  try {
+    const { authSDK, dbSDK } = await firebaseReady;
 
-  const settings = document.getElementById("settingsBox");
-  if (settings) settings.style.display = "none";
+    const username =
+      document.getElementById("newUser").value.trim();
 
-  showLogin();
+    const phone =
+      document.getElementById("newPhone").value.trim();
 
-  const adminButton = document.getElementById("adminBtnRow");
-  if (adminButton) adminButton.style.display = "none";
+    const email =
+      document.getElementById("newGmail").value.trim().toLowerCase();
+
+    const password =
+      document.getElementById("newPass").value;
+
+    if (!username || !email || !password) {
+      showMessage("signupMsg", "Sab required details bharo!");
+      return;
+    }
+
+    if (password.length < 6) {
+      showMessage("signupMsg", "Password kam az kam 6 characters ka ho!");
+      return;
+    }
+
+    showMessage("signupMsg", "Account ban raha hai...", "blue");
+
+    const result = await authSDK.createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = result.user;
+
+    await dbSDK.setDoc(
+      dbSDK.doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        username: username,
+        phone: phone,
+        email: email,
+        coins: 5000,
+        gems: 0,
+        level: 1,
+        role: "player",
+        createdAt: dbSDK.serverTimestamp()
+      }
+    );
+
+    showMessage(
+      "signupMsg",
+      "Account successfully ban gaya!",
+      "green"
+    );
+
+    setTimeout(showLogin, 1200);
+
+  } catch (error) {
+    console.error(error);
+    showMessage("signupMsg", error.message);
+  }
 }
 
-// Start with login screen
-document.addEventListener("DOMContentLoaded", function() {
-  const loading = document.getElementById("loadingScreen");
+async function doLogin() {
+  try {
+    const { authSDK, dbSDK } = await firebaseReady;
 
-  if (loading) loading.style.display = "none";
+    const email =
+      document.getElementById("loginInput").value.trim().toLowerCase();
 
-  currentUser = null;
-  sessionStorage.removeItem(SESSION_KEY);
+    const password =
+      document.getElementById("passInput").value;
 
-  showLogin();
-});
+    if (!email || !password) {
+      showMessage("loginMsg", "Email aur password likho!");
+      return;
+    }
+
+    showMessage("loginMsg", "Login ho raha hai...", "blue");
+
+    const result = await authSDK.signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = result.user;
+
+    const profileRef = dbSDK.doc(db, "users", user.uid);
+    const profileSnap = await dbSDK.getDoc(profileRef);
+
+    if (!profileSnap.exists()) {
+      throw new Error("Player profile nahi mila!");
+    }
+
+    const profile = profileSnap.data();
+
+    window.binraoCurrentUser = profile;
+    window.binraoCurrentUID = user.uid;
+
+    document.getElementById("player").innerText =
+      "Player: " + (profile.username || email);
+
+    isAdminNow = profile.role === "admin";
+    currentUser = profile.username || email;
+
+    myCoins = Number(profile.coins || 0);
+    myGems = Number(profile.gems || 0);
+    myLevelText = String(profile.level || 1);
+
+    document.getElementById("adminBtnRow").style.display =
+      isAdminNow ? "block" : "none";
+
+    if (typeof updateCoinsUI === "function") {
+      updateCoinsUI();
+    }
+
+    hideAuthScreens();
+    document.getElementById("mainMenu").style.display = "flex";
+
+    console.log("Login successful:", profile.username);
+
+  } catch (error) {
+    console.error(error);
+    showMessage("loginMsg", error.message);
+  }
+}
+
+async function doLogout() {
+  try {
+    const { authSDK } = await firebaseReady;
+
+    await authSDK.signOut(auth);
+
+    currentUser = "";
+    isAdminNow = false;
+
+    document.getElementById("adminBtnRow").style.display = "none";
+
+    showLogin();
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+}
+
+window.showLogin = showLogin;
+window.showSignup = showSignup;
+window.doLogin = doLogin;
+window.doSignup = doSignup;
+window.backToMenu = backToMenu;
+window.doLogout = doLogout;
+
+console.log("BINRAO LUDO LOGIN SYSTEM LOADED");
