@@ -1,84 +1,225 @@
-let loginType = 'user';
-function setLoginType(type) {
-  loginType = type;
-  let text = document.getElementById("loginTypeText");
-  let input = document.getElementById("loginInput");
-  if (type === 'phone') { text.innerText = "Phone se Login"; input.placeholder = "Phone Number"; }
-  else if (type === 'gmail') { text.innerText = "Gmail se Login"; input.placeholder = "Gmail"; }
-  else { text.innerText = "Username se Login"; input.placeholder = "Username"; }
-}
-function hideAll() {
-  document.getElementById("mainMenu").style.display = "none";
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("signupBox").style.display = "none";
-  document.getElementById("gameBox").style.display = "none";
-}
-function backToMenu() { hideAll(); document.getElementById("mainMenu").style.display = "flex"; }
-function showSignup() { hideAll(); document.getElementById("signupBox").style.display = "block"; }
-function showLogin() { hideAll(); document.getElementById("loginBox").style.display = "block"; }
+/* =====================================
+   BINRAO LUDO STAR
+   LOGIN & SIGNUP SYSTEM
+   Local Demo Version
+===================================== */
+
+let currentUser = null;
+
+const USERS_KEY = "binrao_users";
+const SESSION_KEY = "binrao_session";
+
+// Get saved users
 function getUsers() {
-  let users = localStorage.getItem("binrao_users");
-  if (!users) return [];
-  return JSON.parse(users);
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+  } catch (error) {
+    return [];
+  }
 }
+
+// Save users
+function saveUsers(users) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+// Hide all screens
+function hideAll() {
+  const screens = [
+    "loginBox",
+    "signupBox",
+    "mainMenu",
+    "gameBox",
+    "storeBox",
+    "adminBox"
+  ];
+
+  screens.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) element.style.display = "none";
+  });
+}
+
+// Show login
+function showLogin() {
+  hideAll();
+
+  const login = document.getElementById("loginBox");
+  if (login) login.style.display = "flex";
+
+  const message = document.getElementById("loginMsg");
+  if (message) message.innerText = "";
+}
+
+// Show signup
+function showSignup() {
+  hideAll();
+
+  const signup = document.getElementById("signupBox");
+  if (signup) signup.style.display = "block";
+
+  const message = document.getElementById("signupMsg");
+  if (message) message.innerText = "";
+}
+
+// Show main menu
+function showMainMenu() {
+  hideAll();
+
+  const menu = document.getElementById("mainMenu");
+  if (menu) menu.style.display = "flex";
+
+  const coins = document.getElementById("topCoins");
+  const gems = document.getElementById("topGems");
+
+  if (coins) coins.innerText = "7050";
+  if (gems) gems.innerText = "89";
+
+  const adminButton = document.getElementById("adminBtnRow");
+  if (adminButton) adminButton.style.display = "none";
+}
+
+// Signup
 function doSignup() {
-  let user = document.getElementById("newUser").value.trim();
-  let phone = document.getElementById("newPhone").value.trim();
-  let gmail = document.getElementById("newGmail").value.trim();
-  let pass = document.getElementById("newPass").value.trim();
-  if (!user || !phone || !gmail || !pass) { document.getElementById("signupMsg").innerText = "Sab kuch bharo!"; return; }
-  let users = getUsers();
-  let exists = users.find(u => u.user === user || u.phone === phone || u.gmail === gmail);
-  if (exists) { document.getElementById("signupMsg").innerText = "Ye account pehle se hai, Login karo!"; return; }
-  users.push({ user: user, phone: phone, gmail: gmail, pass: pass });
-  localStorage.setItem("binrao_users", JSON.stringify(users));
-  document.getElementById("signupMsg").innerText = "Account ban gaya! Ab Login karo";
-  setTimeout(() => { showLogin(); }, 1000);
-}
-function doLogin() {
-  let input = document.getElementById("loginInput").value.trim();
-  let pass = document.getElementById("passInput").value.trim();
-  if (!input || !pass) { document.getElementById("loginMsg").innerText = "Username / Password likho!"; return; }
+  const username = document
+    .getElementById("newUser").value.trim();
 
-  // ADMIN - Username pehle se likha hua hai
-  let ADMIN_USER = "Binrao";
-  let ADMIN_PASS = "Khalidks1";
+  const phone = document
+    .getElementById("newPhone").value.trim();
 
-  if (input === ADMIN_USER && pass === ADMIN_PASS) {
-    hideAll();
-    document.getElementById("gameBox").style.display = "block";
-    document.getElementById("player").innerText = "Player: Admin - Binrao";
+  const email = document
+    .getElementById("newGmail").value.trim().toLowerCase();
+
+  const password = document
+    .getElementById("newPass").value;
+
+  const message = document.getElementById("signupMsg");
+
+  if (!username || !phone || !email || !password) {
+    message.innerText = "Please fill in all fields!";
     return;
   }
-  let users = getUsers();
-  let found = null;
-  if (loginType === 'phone') found = users.find(u => u.phone === input && u.pass === pass);
-  else if (loginType === 'gmail') found = users.find(u => u.gmail === input && u.pass === pass);
-  else found = users.find(u => u.user === input && u.pass === pass);
-  if (found) {
-    hideAll();
-    document.getElementById("gameBox").style.display = "block";
-    document.getElementById("player").innerText = "Player: " + found.user;
-  } else {
-    document.getElementById("loginMsg").innerText = "Galat Login! Pehle Account Banao";
+
+  if (password.length < 6) {
+    message.innerText = "Password must be at least 6 characters!";
+    return;
   }
+
+  const users = getUsers();
+
+  const exists = users.some(user =>
+    user.username.toLowerCase() === username.toLowerCase() ||
+    user.phone === phone ||
+    user.email === email
+  );
+
+  if (exists) {
+    message.innerText = "Account already exists. Please login.";
+    return;
+  }
+
+  users.push({
+    username: username,
+    phone: phone,
+    email: email,
+    password: password,
+    coins: 7050,
+    gems: 89,
+    level: 1
+  });
+
+  saveUsers(users);
+
+  message.innerText = "Account created! Please login.";
+
+  document.getElementById("newUser").value = "";
+  document.getElementById("newPhone").value = "";
+  document.getElementById("newGmail").value = "";
+  document.getElementById("newPass").value = "";
+
+  showLogin();
 }
-function goPhoneLogin() {
-  if (!document.getElementById("agree").checked) { alert("Pehle Terms pe Tick karo!"); return; }
-  showLogin(); setLoginType('phone');
+
+// Login
+function doLogin() {
+  const input = document
+    .getElementById("loginInput").value.trim();
+
+  const password = document
+    .getElementById("passInput").value;
+
+  const message = document.getElementById("loginMsg");
+
+  if (!input || !password) {
+    message.innerText = "Enter username and password!";
+    return;
+  }
+
+  const users = getUsers();
+
+  const user = users.find(item =>
+    (
+      item.username.toLowerCase() === input.toLowerCase() ||
+      item.phone === input ||
+      item.email.toLowerCase() === input.toLowerCase()
+    ) && item.password === password
+  );
+
+  if (!user) {
+    message.innerText = "Incorrect login details!";
+    return;
+  }
+
+  currentUser = user;
+
+  sessionStorage.setItem(
+    SESSION_KEY,
+    JSON.stringify({
+      username: user.username
+    })
+  );
+
+  document.getElementById("loginInput").value = "";
+  document.getElementById("passInput").value = "";
+
+  const level = document.getElementById("levelText");
+  if (level) level.innerText = "Level " + user.level;
+
+  showMainMenu();
 }
-function goGmailLogin() {
-  if (!document.getElementById("agree").checked) { alert("Pehle Terms pe Tick karo!"); return; }
-  showLogin(); setLoginType('gmail');
-  document.getElementById("loginInput").type = "email";
+
+// Back to menu
+function backToMenu() {
+  if (!currentUser) {
+    showLogin();
+    return;
+  }
+
+  showMainMenu();
 }
-function goUsernameLogin() {
-  if (!document.getElementById("agree").checked) { alert("Pehle Terms pe Tick karo!"); return; }
-  showLogin(); setLoginType('user');
+
+// Logout
+function doLogout() {
+  currentUser = null;
+  sessionStorage.removeItem(SESSION_KEY);
+
+  const settings = document.getElementById("settingsBox");
+  if (settings) settings.style.display = "none";
+
+  showLogin();
+
+  const adminButton = document.getElementById("adminBtnRow");
+  if (adminButton) adminButton.style.display = "none";
 }
-window.onload = function() {
-  setTimeout(function() {
-    document.getElementById("loadingScreen").style.display = "none";
-    document.getElementById("mainMenu").style.display = "flex";
-  }, 3000);
-};
+
+// Start with login screen
+document.addEventListener("DOMContentLoaded", function() {
+  const loading = document.getElementById("loadingScreen");
+
+  if (loading) loading.style.display = "none";
+
+  currentUser = null;
+  sessionStorage.removeItem(SESSION_KEY);
+
+  showLogin();
+});
