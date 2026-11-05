@@ -1,225 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#5b1a5e">
-  <title>BINRAO LUDO STAR</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#30105c">
+<title>BINRAO LUDO</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loadingScreen">
-    <h1 class="ludo-logo">BINRAO</h1>
-    <h2>LUDO STAR ⭐</h2>
-    <div class="loader"></div>
-    <p>Loading Game...</p>
-  </div>
+<!-- LOADING -->
+<div id="loadingScreen">
+  <h1>👑 BINRAO LUDO</h1>
+  <p>Loading Game...</p>
+</div>
 
-  <!-- Login -->
-  <section id="loginBox" class="box">
-    <h2>Welcome Back 🔐</h2>
-    <p id="loginTypeText">Username se Login</p>
+<!-- LOGIN -->
+<section id="loginBox" class="box">
+  <h1>👑 BINRAO LUDO</h1>
+  <h2>Welcome Back</h2>
 
-    <input id="loginInput" type="text" placeholder="Username">
-    <input id="passInput" type="password" placeholder="Password">
+  <input id="loginInput" type="email"
+  placeholder="Email Address">
 
-    <button class="btn-gold" onclick="doLogin()">LOGIN</button>
+  <input id="passInput" type="password"
+  placeholder="Password">
 
-    <p id="loginMsg"></p>
+  <button class="btn" onclick="doLogin()">
+    LOGIN
+  </button>
 
-    <span class="link" onclick="showSignup()">
-      Create New Account
-    </span>
-  </section>
+  <p id="loginMsg"></p>
 
-  <!-- Signup -->
-  <section id="signupBox" class="box">
-    <h2>Create Account ✨</h2>
+  <button class="btn"
+  onclick="showSignup()">
+    CREATE NEW ACCOUNT
+  </button>
+</section>
 
-    <input id="newUser" placeholder="Username">
-    <input id="newPhone" placeholder="Phone Number">
-    <input id="newGmail" type="email" placeholder="Gmail">
-    <input id="newPass" type="password" placeholder="Password">
+<!-- SIGNUP -->
+<section id="signupBox" class="box">
+  <h1>Create Account</h1>
 
-    <button class="btn-gold" onclick="doSignup()">
-      SIGN UP
-    </button>
+  <input id="newUser" placeholder="Player Name">
 
-    <p id="signupMsg"></p>
+  <input id="newGmail" type="email"
+  placeholder="Email Address">
 
-    <span class="link" onclick="showLogin()">
-      Already have an account? Login
-    </span>
-  </section>
+  <input id="newPass" type="password"
+  placeholder="Password">
 
-  <!-- Main Menu -->
-  <main id="mainMenu">
-    <header class="topBar">
-      <div class="avatarWrap">
-        <div class="avatar">👑</div>
-        <span id="levelText">Level 1</span>
-      </div>
+  <button class="btn" onclick="doSignup()">
+    SIGN UP
+  </button>
 
-      <div class="pill">
-        🪙 <span id="topCoins">7050</span>
-        <button onclick="openStore()">+</button>
-      </div>
+  <p id="signupMsg"></p>
 
-      <div class="pill">
-        💎 <span id="topGems">89</span>
-        <button onclick="openStore()">+</button>
-      </div>
+  <button class="btn"
+  onclick="showLogin()">
+    BACK TO LOGIN
+  </button>
+</section>
 
-      <button onclick="openSettings()">⚙️</button>
-    </header>
+<!-- MAIN HOME -->
+<main id="mainMenu">
 
-    <h1 class="watermark">BINRAO<br>LUDO STAR</h1>
+  <!-- TOP PROFILE -->
+  <header class="topBar">
 
-    <section class="grid2">
-      <button class="bigCard card2"
-        onclick="startGame('2 Player')">
-        🎲
-        <h2>2 PLAYER</h2>
-      </button>
+    <div class="avatarWrap">
+      <img id="playerAvatar"
+      src="https://via.placeholder.com/60"
+      alt="Player Avatar">
 
-      <button class="bigCard card4"
-        onclick="startGame('4 Player')">
-        🎲🎲
-        <h2>4 PLAYER</h2>
-      </button>
-    </section>
-
-    <section class="grid3">
-      <button class="smallCard" onclick="startGame('Private')">
-        💖<small>Private Table</small>
-      </button>
-
-      <button class="smallCard" onclick="startGame('Online')">
-        ⚔️<small>Online Game</small>
-      </button>
-
-      <button class="smallCard" onclick="startGame('Friends')">
-        👥<small>Friends</small>
-      </button>
-    </section>
-
-    <div class="terms">
-      <label>
-        <input type="checkbox" id="agree">
-        I Accept Terms & Conditions
-      </label>
-    </div>
-
-    <div id="adminBtnRow" class="adminWrap">
-      <button class="adminBigBtn" onclick="openAdmin()">
-        👑 ADMIN PANEL
-      </button>
-    </div>
-
-    <footer class="bottomNav">
-      <button onclick="openStore()">🛒<small>Shop</small></button>
-      <button onclick="alert('Friends coming soon')">👥<small>Friends</small></button>
-      <button onclick="backToMenu()">🏠<small>Home</small></button>
-      <button onclick="alert('Clubs coming soon')">🏆<small>Clubs</small></button>
-      <button onclick="claimDaily()">🎁<small>Reward</small></button>
-    </footer>
-  </main>
-
-  <!-- Game Screen -->
-  <section id="gameBox">
-    <h2 id="player">Player</h2>
-    <p id="computer">Computer AI</p>
-
-    <div id="ludoBoard">
-      <div class="boardPlaceholder">
-        🎲<br>
-        BINRAO LUDO BOARD
-        <p>Board implementation is next</p>
+      <div class="starBadge">
+        ⭐ LEVEL <span id="levelText">1</span>
       </div>
     </div>
 
-    <div class="diceBox">
-      <h2 id="dice">🎲 Dice</h2>
-      <p id="status">Your turn</p>
-
-      <button class="btn-gold" onclick="rollDice()">
-        ROLL DICE
-      </button>
+    <div class="playerInfo">
+      <b id="playerName">Player</b>
+      <small>Online Player</small>
     </div>
 
-    <button class="btn" onclick="backToMenu()">
-      BACK TO HOME
+    <div class="balance">
+      🪙 <span id="topCoins">5000</span>
+    </div>
+
+    <div class="balance">
+      💎 <span id="topGems">0</span>
+    </div>
+
+    <button onclick="openSettings()">
+      ⚙️
+    </button>
+
+  </header>
+
+  <!-- PROFILE -->
+  <section class="profileCard">
+    <h2>🏆 PLAYER PROFILE</h2>
+    <p>Username: <span id="profileName">Player</span></p>
+    <p>Level: <span id="profileLevel">1</span></p>
+    <p>Coins: <span id="profileCoins">5000</span></p>
+    <p>Gems: <span id="profileGems">0</span></p>
+  </section>
+
+  <!-- GAME MODES -->
+  <section class="gameModes">
+
+    <h2>🎲 CHOOSE YOUR GAME</h2>
+
+    <button class="modeCard"
+    onclick="startGame('offline')">
+      🤖
+      <h3>PLAY OFFLINE</h3>
+      <small>Play with Computer</small>
+    </button>
+
+    <button class="modeCard"
+    onclick="startGame('online')">
+      🌍
+      <h3>PLAY ONLINE</h3>
+      <small>Play with Players</small>
+    </button>
+
+    <button class="modeCard"
+    onclick="startGame('friends')">
+      👥
+      <h3>PLAY WITH FRIENDS</h3>
+      <small>Private Room</small>
+    </button>
+
+  </section>
+
+  <!-- DICE OPTIONS -->
+  <section class="diceOptions">
+    <h3>🎲 GAME SETTINGS</h3>
+
+    <label>
+      <input type="checkbox" id="oneDiceCheck" checked>
+      Single Dice
+    </label>
+
+    <label>
+      <input type="checkbox" id="twoDiceCheck">
+      Double Dice
+    </label>
+  </section>
+
+  <!-- STORE -->
+  <section class="storeSection">
+    <h3>🛒 GAME STORE</h3>
+
+    <button onclick="openStore()">
+      OPEN STORE
+    </button>
+
+    <button onclick="claimDaily()">
+      🎁 DAILY REWARD
     </button>
   </section>
 
-  <!-- Store -->
-  <section id="storeBox" class="box">
-    <h2>🛒 BINRAO STORE</h2>
-
-    <p>Coins: <span id="storeCoins">7050</span></p>
-    <p>Gems: <span id="storeGems">89</span></p>
-
-    <button class="btn-gold" onclick="claimFree()">
-      🎁 FREE REWARD
-    </button>
-
-    <p id="storeMsg"></p>
-
-    <button class="btn" onclick="backToMenu()">
-      BACK
+  <!-- ADMIN -->
+  <section id="adminBtnRow" style="display:none">
+    <button onclick="openAdmin()">
+      👑 ADMIN PANEL
     </button>
   </section>
 
-  <!-- Admin -->
-  <section id="adminBox" class="box">
-    <h2>👑 ADMIN PANEL</h2>
+</main>
 
-    <input id="transferTo" placeholder="Player Username">
-    <input id="transferCoins" type="number" placeholder="Coins">
-    <input id="transferGems" type="number" placeholder="Gems">
+<!-- GAME SCREEN -->
+<section id="gameBox">
 
-    <button class="btn-gold" onclick="doTransfer()">
-      TRANSFER
-    </button>
+  <header class="gameHeader">
+    <h2>BINRAO LUDO</h2>
+    <button onclick="backToMenu()">🏠 HOME</button>
+  </header>
 
-    <p id="transferMsg"></p>
-    <p id="transferHistory"></p>
+  <div class="gamePlayers">
+    <div id="player">
+      👤 Player
+    </div>
 
-    <button class="btn" onclick="backToMenu()">BACK</button>
-  </section>
-
-  <!-- Settings -->
-  <div id="settingsBox">
-    <div class="settingsCard">
-      <button onclick="closeSettings()">❌</button>
-      <h2>SETTINGS</h2>
-
-      <div class="setRow">
-        <span>Sound</span>
-        <input type="checkbox" id="soundCheck" checked>
-      </div>
-
-      <div class="setRow">
-        <span>Vibration</span>
-        <input type="checkbox" id="vibCheck" checked>
-      </div>
-
-      <div class="setRow">
-        <span>Kill Mode</span>
-        <input type="checkbox" id="killCheck" checked>
-      </div>
-
-      <button class="btn" onclick="doLogout()">LOGOUT</button>
+    <div id="computer">
+      🤖 Computer
     </div>
   </div>
 
-  <!-- JavaScript Files -->
-  <script src="database.js" defer></script>
-  <script src="login.js" defer></script>
-  <script src="game.js" defer></script>
-  <script src="admin.js" defer></script>
+  <!-- LUDO BOARD -->
+  <div id="ludoBoard">
+
+    <div class="home redHome">
+      🔴
+    </div>
+
+    <div class="home greenHome">
+      🟢
+    </div>
+
+    <div class="home yellowHome">
+      🟡
+    </div>
+
+    <div class="home blueHome">
+      🔵
+    </div>
+
+    <div class="boardCenter">
+      👑
+      <h3>BINRAO</h3>
+      <small>LUDO</small>
+    </div>
+
+  </div>
+
+  <!-- DICE -->
+  <div class="diceBox">
+
+    <div id="dice">
+      🎲
+    </div>
+
+    <p id="status">
+      Roll the dice!
+    </p>
+
+    <button onclick="rollDice()">
+      🎲 ROLL DICE
+    </button>
+
+  </div>
+
+  <!-- VOICE -->
+  <div class="voiceControls">
+
+    <button id="micButton"
+    onclick="toggleMic()">
+      🎤 MIC ON / OFF
+    </button>
+
+    <button onclick="backToMenu()">
+      EXIT GAME
+    </button>
+
+  </div>
+
+</section>
+
+<!-- STORE SCREEN -->
+<section id="storeBox" class="box">
+
+  <h2>🛒 BINRAO STORE</h2>
+
+  <p>Coins: <span id="storeCoins">5000</span></p>
+  <p>Gems: <span id="storeGems">0</span></p>
+
+  <button onclick="claimFree()">
+    🎁 FREE REWARD
+  </button>
+
+  <p id="storeMsg"></p>
+
+  <button onclick="backToMenu()">BACK</button>
+
+</section>
+
+<!-- ADMIN PANEL -->
+<section id="adminBox" class="box">
+
+  <h2>👑 ADMIN PANEL</h2>
+
+  <h3>TRANSFER COINS / GEMS</h3>
+
+  <input id="transferTo"
+  placeholder="Player Email">
+
+  <input id="transferCoins"
+  type="number" placeholder="Coins">
+
+  <input id="transferGems"
+  type="number" placeholder="Gems">
+
+  <button onclick="doTransfer()">
+    TRANSFER
+  </button>
+
+  <p id="transferMsg"></p>
+
+  <div id="transferHistory"></div>
+
+  <button onclick="backToMenu()">BACK HOME</button>
+
+</section>
+
+<!-- SETTINGS -->
+<div id="settingsBox">
+
+  <div class="settingsCard">
+
+    <button onclick="closeSettings()">✖</button>
+
+    <h2>⚙️ SETTINGS</h2>
+
+    <label>
+      <input type="checkbox"
+      id="soundCheck" checked>
+      🔊 Sound
+    </label>
+
+    <label>
+      <input type="checkbox"
+      id="vibCheck" checked>
+      📳 Vibration
+    </label>
+
+    <label>
+      <input type="checkbox"
+      id="oneDiceCheckSettings" checked>
+      🎲 Single Dice
+    </label>
+
+    <label>
+      <input type="checkbox"
+      id="twoDiceCheckSettings">
+      🎲🎲 Double Dice
+    </label>
+
+    <label>
+      <input type="checkbox"
+      id="jotaCheck">
+      👯 Jota Mode
+    </label>
+
+    <label>
+      <input type="checkbox"
+      id="killCheck" checked>
+      💀 Kill Mode
+    </label>
+
+    <button onclick="doLogout()">
+      LOGOUT
+    </button>
+
+  </div>
+
+</div>
+
+<footer>
+  <p>BINRAO LUDO 👑</p>
+  <small>Developed by BINRAO ❤️</small>
+</footer>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<!-- GAME FILES -->
+<script src="database.js"></script>
+<script src="login.js"></script>
+<script src="game.js"></script>
+<script src="admin.js"></script>
 
 </body>
 </html>
